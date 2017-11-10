@@ -1,0 +1,59 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.example.user.qrrecoder"
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 2
+        versionName "1.0.2"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+greendao {
+    schemaVersion 3
+    daoPackage 'com.example.user.qrrecoder.data.greendaoauto'
+    targetGenDir 'src/main/java'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    //greenDao
+    compile 'org.greenrobot:greendao:3.2.2'
+    compile 'org.greenrobot:greendao-generator:3.2.2'
+    compile 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.0.0'
+    //database
+    debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:cardview-v7:26.1.0'
+    //
+    compile 'com.gyf.barlibrary:barlibrary:2.3.0'
+    //log
+    compile 'com.github.huangdali:ELog:v1.3.3'
+    //eventBUS
+    compile 'org.greenrobot:eventbus:3.1.1'
+    //Zbar
+    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.9@aar'
+    compile 'cn.bingoogolapple:bga-zbar:1.1.9@aar'
+    //recycle
+    compile('me.drakeet.multitype:multitype:3.0.0', {
+        exclude group: 'com.android.support'
+    })
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+}

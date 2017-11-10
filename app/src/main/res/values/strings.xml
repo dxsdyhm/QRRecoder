@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">QRRecoder</string>
+    <string name="login">登陆</string>
+    <string name="username">用户名</string>
+    <string name="passworld">密码</string>
+    <string name="forget_pwd">忘记密码</string>
+    <string name="start_scan">开始录入</string>
+    <string name="stop_scan">停止录入</string>
+    <string name="state_updated">已上传</string>
+    <string name="state_unupdate">未上传</string>
+</resources>
