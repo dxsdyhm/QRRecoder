@@ -30,7 +30,6 @@ public class ScanResultActivity extends BaseActivity {
     @BindView(R.id.recy_deviceitem)
     RecyclerView recyDeviceitem;
     private MultiTypeAdapter adapter;
-    /* Items 等同于 ArrayList<Object> */
     private Items items;
 
     @Override
@@ -46,14 +45,16 @@ public class ScanResultActivity extends BaseActivity {
         /* 注册类型和 View 的对应关系 */
         adapter.register(DeviceItem.class, new DeviceItemViewBinder());
         recyDeviceitem.setLayoutManager(new LinearLayoutManager(this));
+        recyDeviceitem.setAdapter(adapter);
 
         items = new Items();
         QueryBuilder<DeviceItem> builder=DBUtils.getDeviceItemService().queryBuilder();
         builder.where(DeviceItemDao.Properties.Userid.eq("1"));
+        builder.orderDesc(DeviceItemDao.Properties.Recordtime);
         items.addAll(builder.list());
         ELog.dxs("size:"+items.size());
+
         adapter.setItems(items);
-        recyDeviceitem.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemRangeChanged(0,items.size()-1);
     }
 }

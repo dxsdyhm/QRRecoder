@@ -1,5 +1,6 @@
 package com.example.user.qrrecoder.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import com.example.user.qrrecoder.base.BaseActivity;
 import com.example.user.qrrecoder.data.greendao.User;
 import com.example.user.qrrecoder.eventbus.eventbusaction.UserAction;
 import com.hdl.elog.ELog;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -18,6 +20,7 @@ import org.greenrobot.eventbus.Subscribe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 public class MainActivity extends BaseActivity {
 
@@ -49,14 +52,26 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_scan)
     public void onViewClicked() {
-        Toast.makeText(this,R.string.start_scan,Toast.LENGTH_LONG).show();
-        Intent scan=new Intent(this,ZbarActivity.class);
-        startActivity(scan);
+        RequirePermission();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    private void RequirePermission(){
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions
+                .request(Manifest.permission.CAMERA)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        ELog.dxs("aBoolean:"+aBoolean);
+                        Intent scan=new Intent(MainActivity.this,ZbarActivity.class);
+                        startActivity(scan);
+                    }
+                });
     }
 }

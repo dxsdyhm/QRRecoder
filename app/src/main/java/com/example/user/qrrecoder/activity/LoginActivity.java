@@ -63,7 +63,7 @@ public class LoginActivity extends BaseFullScreenActivity {
     private void createDialog(){
         builder = new MaterialDialog.Builder(this)
                 .title(R.string.app_name)
-                .content(R.string.login)
+                .content(R.string.logining)
                 .progress(true,0);
     }
 

@@ -24,9 +24,10 @@ public class DeviceItemDao extends AbstractDao<DeviceItem, Void> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Name = new Property(0, String.class, "name", false, "NAME");
+        public final static Property Deviceid = new Property(0, String.class, "deviceid", false, "DEVICEID");
         public final static Property Userid = new Property(1, String.class, "userid", false, "USERID");
-        public final static Property ServerState = new Property(2, int.class, "serverState", false, "SERVER_STATE");
+        public final static Property Recordtime = new Property(2, long.class, "recordtime", false, "RECORDTIME");
+        public final static Property ServerState = new Property(3, int.class, "serverState", false, "SERVER_STATE");
     }
 
 
@@ -42,12 +43,13 @@ public class DeviceItemDao extends AbstractDao<DeviceItem, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"DEVICE_ITEM\" (" + //
-                "\"NAME\" TEXT," + // 0: name
+                "\"DEVICEID\" TEXT," + // 0: deviceid
                 "\"USERID\" TEXT," + // 1: userid
-                "\"SERVER_STATE\" INTEGER NOT NULL );"); // 2: serverState
+                "\"RECORDTIME\" INTEGER NOT NULL ," + // 2: recordtime
+                "\"SERVER_STATE\" INTEGER NOT NULL );"); // 3: serverState
         // Add Indexes
-        db.execSQL("CREATE INDEX " + constraint + "IDX_DEVICE_ITEM_NAME ON \"DEVICE_ITEM\"" +
-                " (\"NAME\" ASC);");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_DEVICE_ITEM_DEVICEID ON \"DEVICE_ITEM\"" +
+                " (\"DEVICEID\" ASC);");
         db.execSQL("CREATE INDEX " + constraint + "IDX_DEVICE_ITEM_USERID ON \"DEVICE_ITEM\"" +
                 " (\"USERID\" ASC);");
     }
@@ -62,32 +64,34 @@ public class DeviceItemDao extends AbstractDao<DeviceItem, Void> {
     protected final void bindValues(DatabaseStatement stmt, DeviceItem entity) {
         stmt.clearBindings();
  
-        String name = entity.getName();
-        if (name != null) {
-            stmt.bindString(1, name);
+        String deviceid = entity.getDeviceid();
+        if (deviceid != null) {
+            stmt.bindString(1, deviceid);
         }
  
         String userid = entity.getUserid();
         if (userid != null) {
             stmt.bindString(2, userid);
         }
-        stmt.bindLong(3, entity.getServerState());
+        stmt.bindLong(3, entity.getRecordtime());
+        stmt.bindLong(4, entity.getServerState());
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, DeviceItem entity) {
         stmt.clearBindings();
  
-        String name = entity.getName();
-        if (name != null) {
-            stmt.bindString(1, name);
+        String deviceid = entity.getDeviceid();
+        if (deviceid != null) {
+            stmt.bindString(1, deviceid);
         }
  
         String userid = entity.getUserid();
         if (userid != null) {
             stmt.bindString(2, userid);
         }
-        stmt.bindLong(3, entity.getServerState());
+        stmt.bindLong(3, entity.getRecordtime());
+        stmt.bindLong(4, entity.getServerState());
     }
 
     @Override
@@ -98,18 +102,20 @@ public class DeviceItemDao extends AbstractDao<DeviceItem, Void> {
     @Override
     public DeviceItem readEntity(Cursor cursor, int offset) {
         DeviceItem entity = new DeviceItem( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // name
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // deviceid
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // userid
-            cursor.getInt(offset + 2) // serverState
+            cursor.getLong(offset + 2), // recordtime
+            cursor.getInt(offset + 3) // serverState
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, DeviceItem entity, int offset) {
-        entity.setName(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setDeviceid(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
         entity.setUserid(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setServerState(cursor.getInt(offset + 2));
+        entity.setRecordtime(cursor.getLong(offset + 2));
+        entity.setServerState(cursor.getInt(offset + 3));
      }
     
     @Override

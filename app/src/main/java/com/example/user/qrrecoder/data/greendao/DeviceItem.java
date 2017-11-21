@@ -6,6 +6,9 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.ToOne;
 
+import java.sql.Date;
+import java.text.DateFormat;
+
 /**
  * Created by USER on 2017/11/7.
  */
@@ -13,24 +16,21 @@ import org.greenrobot.greendao.annotation.ToOne;
 @Entity
 public class DeviceItem {
     @Index
-    private String name;
+    private String deviceid;
     @Index
     private String userid;
+    private long recordtime;
     private int serverState;//上传的状态
-    @Generated(hash = 174553394)
-    public DeviceItem(String name, String userid, int serverState) {
-        this.name = name;
+    @Generated(hash = 1650400776)
+    public DeviceItem(String deviceid, String userid, long recordtime,
+            int serverState) {
+        this.deviceid = deviceid;
         this.userid = userid;
+        this.recordtime = recordtime;
         this.serverState = serverState;
     }
     @Generated(hash = 1139167867)
     public DeviceItem() {
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
     public String getUserid() {
         return this.userid;
@@ -43,5 +43,17 @@ public class DeviceItem {
     }
     public void setServerState(int serverState) {
         this.serverState = serverState;
+    }
+    public long getRecordtime() {
+        return this.recordtime;
+    }
+    public void setRecordtime(long recordtime) {
+        this.recordtime = recordtime;
+    }
+    public String getDeviceid() {
+        return this.deviceid;
+    }
+    public void setDeviceid(String deviceid) {
+        this.deviceid = deviceid;
     }
 }
