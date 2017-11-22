@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.Subscribe;
  */
 
 public abstract class BaseActivity extends BaseCoreActivity {
+    public static final int TOOLBAR_MARGING=20;
     public Toolbar toolbar;
     
     @Override
@@ -26,7 +27,6 @@ public abstract class BaseActivity extends BaseCoreActivity {
         super.onCreate(savedInstanceState);
         setContentView(getConstomLayout());
         initToolBar();
-
     }
 
     @Override

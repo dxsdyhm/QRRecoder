@@ -71,10 +71,4 @@ public class ScanResultActivity extends BaseActivity {
         adapter.setItems(items);
         adapter.notifyItemRangeChanged(0,items.size()-1);
     }
-
-    @Override
-    public void onBackListner(MenuItem item) {
-        super.onBackListner(item);
-        Toast.makeText(this,"item:"+item.getItemId(),Toast.LENGTH_LONG).show();
-    }
 }

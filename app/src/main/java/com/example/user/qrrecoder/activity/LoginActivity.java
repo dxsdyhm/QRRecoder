@@ -88,6 +88,7 @@ public class LoginActivity extends BaseFullScreenActivity {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 EventBus.getDefault().postSticky(new UserAction(new User("1", "dxsdyhm", "dxs19911225")));
+                finish();
             }
 
             @Override

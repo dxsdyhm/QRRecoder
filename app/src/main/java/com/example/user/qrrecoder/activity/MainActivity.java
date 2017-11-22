@@ -11,6 +11,7 @@ import com.example.user.qrrecoder.R;
 import com.example.user.qrrecoder.base.BaseActivity;
 import com.example.user.qrrecoder.data.greendao.User;
 import com.example.user.qrrecoder.eventbus.eventbusaction.UserAction;
+import com.example.user.qrrecoder.utils.SizeUtils;
 import com.hdl.elog.ELog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -39,6 +40,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected int getConstomLayout() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    public void setToolBarNavigation() {
+        //不需要返回箭头
+        toolbar.setContentInsetsAbsolute(SizeUtils.dp2px(TOOLBAR_MARGING),0);
     }
 
     @Subscribe(sticky = true)

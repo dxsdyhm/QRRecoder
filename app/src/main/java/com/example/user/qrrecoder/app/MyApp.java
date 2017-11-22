@@ -1,6 +1,7 @@
 package com.example.user.qrrecoder.app;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.example.user.qrrecoder.data.greendaoutil.DBUtils;
 import com.example.user.qrrecoder.data.greendaoutil.GreenDaoUtils;
@@ -10,9 +11,11 @@ import com.example.user.qrrecoder.data.greendaoutil.GreenDaoUtils;
  */
 
 public class MyApp extends Application {
+    public static Context app;
     @Override
     public void onCreate() {
         super.onCreate();
+        app=this;
         GreenDaoUtils.init(this);
     }
 }
