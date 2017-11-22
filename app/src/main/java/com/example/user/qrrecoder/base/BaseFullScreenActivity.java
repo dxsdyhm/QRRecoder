@@ -9,7 +9,7 @@ import com.gyf.barlibrary.ImmersionBar;
  * Created by USER on 2017/11/8.
  */
 
-public abstract class BaseFullScreenActivity extends BaseActivity {
+public abstract class BaseFullScreenActivity extends BaseCoreActivity {
     @Override
     public boolean initBar() {
         return true;

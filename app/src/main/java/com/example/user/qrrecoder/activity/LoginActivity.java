@@ -52,7 +52,6 @@ public class LoginActivity extends BaseFullScreenActivity {
         ButterKnife.bind(this);
     }
 
-
     @OnClick(R.id.bt_go)
     public void onViewClicked() {
         createDialog();

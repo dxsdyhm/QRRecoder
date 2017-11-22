@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.user.qrrecoder.R;
 import com.example.user.qrrecoder.adapter.DeviceItemViewBinder;
@@ -35,9 +38,20 @@ public class ScanResultActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scanresult);
         ButterKnife.bind(this);
         initData();
+    }
+
+    @Override
+    protected int getConstomLayout() {
+        return R.layout.activity_scanresult;
+    }
+
+    @Override
+    public void setToolBarTitle() {
+        if(toolbar!=null){
+            toolbar.setTitle(R.string.scan_result);
+        }
     }
 
     private void initData() {
@@ -56,5 +70,11 @@ public class ScanResultActivity extends BaseActivity {
 
         adapter.setItems(items);
         adapter.notifyItemRangeChanged(0,items.size()-1);
+    }
+
+    @Override
+    public void onBackListner(MenuItem item) {
+        super.onBackListner(item);
+        Toast.makeText(this,"item:"+item.getItemId(),Toast.LENGTH_LONG).show();
     }
 }

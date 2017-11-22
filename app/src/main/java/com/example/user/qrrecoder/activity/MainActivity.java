@@ -32,9 +32,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected int getConstomLayout() {
+        return R.layout.activity_main;
     }
 
     @Subscribe(sticky = true)

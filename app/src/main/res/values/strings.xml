@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QRRecoder</string>
+    <string name="app_name">扫码助手</string>
     <string name="login">登陆</string>
     <string name="logining">登陆中...</string>
     <string name="username">用户名</string>
@@ -13,4 +13,5 @@
     <string name="device_id">设备号</string>
     <string name="upload_state">上传状态</string>
     <string name="record_time">录入时间</string>
+    <string name="scan_result">扫描结果</string>
 </resources>
