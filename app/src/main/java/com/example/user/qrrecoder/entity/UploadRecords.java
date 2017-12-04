@@ -5,7 +5,10 @@ import android.util.Log;
 import com.example.user.qrrecoder.data.greendao.DeviceItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,11 +44,7 @@ public class UploadRecords {
     }
 
     public String getJsonString(){
-        Log.e("dxsTest",deviceItems.get(0).toString());
-//        Gson gson=new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        Gson gson=new Gson();
-        String json=gson.toJson(deviceItems);
-        Log.e("dxsTest","json:"+json);
-        return json;
+        Gson gson=new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(deviceItems);
     }
 }

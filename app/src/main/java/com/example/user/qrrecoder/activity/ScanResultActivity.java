@@ -94,16 +94,17 @@ public class ScanResultActivity extends BaseActivity {
     public void onViewClicked() {
         createDialog();
         final MaterialDialog dialog = builder.build();
-        Observer<HttpResults> observer =new Observer<HttpResults>() {
+        Observer<String> observer =new Observer<String>() {
             @Override
             public void onSubscribe(Disposable d) {
                 dialog.show();
             }
 
             @Override
-            public void onNext(HttpResults httpResults) {
-                ELog.dxs("httpResults:"+httpResults.getError());
+            public void onNext(String stringHttpResults) {
+                ELog.dxs("httpResults:"+stringHttpResults);
             }
+
 
             @Override
             public void onError(Throwable e) {

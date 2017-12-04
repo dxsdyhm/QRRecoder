@@ -54,12 +54,12 @@ public class DeviceItemViewBinder extends ItemViewBinder<DeviceItem, DeviceItemV
     }
 
     private String getServerStateString(DeviceItem item){
-//        if(item.getServerState()==0){
-//            return "未上传";
-//        }else if(item.getServerState()==1){
-//            return "已上传";
-//        }
-        return "1";//String.valueOf(item.getServerState());
+        if(item.getServerState()==0){
+            return "未上传";
+        }else if(item.getServerState()==1){
+            return "已上传";
+        }
+        return String.valueOf(item.getServerState());
     }
 
     private String getRecordTimeString(DeviceItem item){

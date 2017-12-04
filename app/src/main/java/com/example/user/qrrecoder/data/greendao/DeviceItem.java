@@ -21,29 +21,39 @@ import java.text.DateFormat;
 
 @Entity
 public class DeviceItem{
+    @Expose
     @Index
     @NotNull
     private int fdeviceid;
+    @Expose
     @Index
     private int fid;
+    @Expose
     @NotNull
     private String fdeviceuuid;
+    @Expose
     private long fscantime;
-    //@Expose(serialize = false)
-    //private int serverState;//上传的状态
+    @Expose(serialize = false)
+    private int serverState;//上传的状态
+    @Expose
     private String faccount;
+    @Expose
     private String fcreate;
+    @Expose
     private long ftime;
+    @Expose
     private String fstatus;
+    @Expose
     private String fdes;//描述
-    @Generated(hash = 1975965732)
+    @Generated(hash = 380219941)
     public DeviceItem(int fdeviceid, int fid, @NotNull String fdeviceuuid,
-            long fscantime, String faccount, String fcreate, long ftime,
-            String fstatus, String fdes) {
+            long fscantime, int serverState, String faccount, String fcreate,
+            long ftime, String fstatus, String fdes) {
         this.fdeviceid = fdeviceid;
         this.fid = fid;
         this.fdeviceuuid = fdeviceuuid;
         this.fscantime = fscantime;
+        this.serverState = serverState;
         this.faccount = faccount;
         this.fcreate = fcreate;
         this.ftime = ftime;
@@ -122,5 +132,11 @@ public class DeviceItem{
                 ", fstatus='" + fstatus + '\'' +
                 ", fdes='" + fdes + '\'' +
                 '}';
+    }
+    public int getServerState() {
+        return this.serverState;
+    }
+    public void setServerState(int serverState) {
+        this.serverState = serverState;
     }
 }

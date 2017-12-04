@@ -86,7 +86,7 @@ public class HttpSend {
                 .subscribe(observer);
     }
 
-    public void uploadRecord(UploadRecords records, Observer<HttpResults> observer){
+    public void uploadRecord(UploadRecords records, Observer<String> observer){
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         // Log信息拦截器
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
