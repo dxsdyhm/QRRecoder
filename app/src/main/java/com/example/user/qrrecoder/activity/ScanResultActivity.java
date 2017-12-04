@@ -1,5 +1,6 @@
 package com.example.user.qrrecoder.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,7 @@ import com.example.user.qrrecoder.data.greendaoutil.DBUtils;
 import com.example.user.qrrecoder.entity.UploadRecords;
 import com.example.user.qrrecoder.http.Enty.HttpResults;
 import com.example.user.qrrecoder.http.retrofit.HttpSend;
+import com.example.user.qrrecoder.utils.ToastUtils;
 import com.hdl.elog.ELog;
 
 import org.greenrobot.greendao.query.QueryBuilder;
@@ -42,11 +44,13 @@ public class ScanResultActivity extends BaseActivity {
     private MultiTypeAdapter adapter;
     private Items items;
     private List<DeviceItem> deviceItems;
+    private Context mContext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        mContext=this;
         initData();
     }
 
@@ -86,7 +90,7 @@ public class ScanResultActivity extends BaseActivity {
     private void createDialog(){
         builder = new MaterialDialog.Builder(this)
                 .title(R.string.app_name)
-                .content(R.string.logining)
+                .content(R.string.scan_uploading)
                 .progress(true,0);
     }
 
@@ -102,20 +106,20 @@ public class ScanResultActivity extends BaseActivity {
 
             @Override
             public void onNext(String stringHttpResults) {
-                ELog.dxs("httpResults:"+stringHttpResults);
+                String toast=String.format(mContext.getString(R.string.upload_success),stringHttpResults);
+                ToastUtils.ShowSuccess(mContext,toast);
             }
 
 
             @Override
             public void onError(Throwable e) {
                 dialog.dismiss();
-                ELog.dxs("httpResults:"+e);
+                ToastUtils.ShowError(mContext,e.toString(),1500,false);
             }
 
             @Override
             public void onComplete() {
                 dialog.dismiss();
-                ELog.dxs("onComplete:");
             }
         };
         UploadRecords records=new UploadRecords("1",deviceItems);

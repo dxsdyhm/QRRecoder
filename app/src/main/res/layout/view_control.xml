@@ -10,7 +10,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="90dp"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/selecter_scan_stop"
         app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@color/color_ffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
