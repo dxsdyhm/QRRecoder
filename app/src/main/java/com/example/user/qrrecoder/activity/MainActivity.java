@@ -4,11 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.user.qrrecoder.R;
 import com.example.user.qrrecoder.base.BaseActivity;
 import com.example.user.qrrecoder.data.greendao.User;
@@ -35,6 +34,8 @@ public class MainActivity extends BaseActivity {
     TextView txUserinfo;
     @BindView(R.id.btn_scan)
     Button btnScan;
+    @BindView(R.id.tx_scanresult)
+    TextView txScanresult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,27 +52,32 @@ public class MainActivity extends BaseActivity {
     @Override
     public void setToolBarNavigation() {
         //不需要返回箭头
-        toolbar.setContentInsetsAbsolute(SizeUtils.dp2px(TOOLBAR_MARGING),0);
+        toolbar.setContentInsetsAbsolute(SizeUtils.dp2px(TOOLBAR_MARGING), 0);
     }
 
     @Subscribe(sticky = true)
     public void onUserLoginSuccess(UserAction userAction) {
         User user = userAction.getUser();
-        StringBuilder sb=new StringBuilder();
-        sb.append("编号："+user.getUserid());
+        StringBuilder sb = new StringBuilder();
+        sb.append("编号：" + user.getUserid());
         sb.append("\n");
-        sb.append("姓名："+user.getUsername());
+        sb.append("姓名：" + user.getUsername());
         sb.append("\n");
-        sb.append("邮箱："+user.getEmail());
+        sb.append("邮箱：" + user.getEmail());
         sb.append("\n");
-        sb.append("公司："+user.getFname());
+        sb.append("公司：" + user.getFname());
         sb.append("\n");
         txUserinfo.setText(sb.toString());
     }
 
-    @OnClick(R.id.btn_scan)
-    public void onViewClicked() {
-        RequirePermission();
+    @OnClick({R.id.btn_scan, R.id.tx_scanresult})
+    public void onViewClicked(View view) {
+        if(view.getId()==R.id.btn_scan){
+            RequirePermission();
+        }else if(view.getId()==R.id.tx_scanresult){
+            //去扫码列表页
+            toScanRecord();
+        }
     }
 
     @Override
@@ -80,44 +86,23 @@ public class MainActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    private void RequirePermission(){
+    private void RequirePermission() {
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions
                 .request(Manifest.permission.CAMERA)
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        ELog.dxs("aBoolean:"+aBoolean);
-                        Intent scan=new Intent(MainActivity.this,ZbarActivity.class);
+                        ELog.dxs("aBoolean:" + aBoolean);
+                        Intent scan = new Intent(MainActivity.this, ZbarActivity.class);
                         startActivity(scan);
 //                        Login();
                     }
                 });
     }
 
-    private void Login() {
-
-        HttpSend.getInstence().login("dxs@gwell.cc", "test", new Observer<LoginResult>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-
-            @Override
-            public void onNext(LoginResult loginResult) {
-               Log.e("dxsTest","loginResult:"+loginResult.getFname());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("dxsTest","Throwable"+e);
-            }
-
-            @Override
-            public void onComplete() {
-                Log.e("dxsTest","onComplete");
-            }
-        });
+    private void toScanRecord(){
+        Intent list=new Intent(this,ScanResultActivity.class);
+        startActivity(list);
     }
 }

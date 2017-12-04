@@ -1,5 +1,6 @@
 package com.example.user.qrrecoder.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.widget.Button;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.user.qrrecoder.R;
+import com.example.user.qrrecoder.app.SPKey;
 import com.example.user.qrrecoder.base.BaseFullScreenActivity;
 import com.example.user.qrrecoder.data.greendao.User;
 import com.example.user.qrrecoder.eventbus.eventbusaction.UserAction;
@@ -18,6 +20,7 @@ import com.example.user.qrrecoder.http.Enty.LoginResult;
 import com.example.user.qrrecoder.http.Enty.Subject;
 import com.example.user.qrrecoder.http.api.ApiService;
 import com.example.user.qrrecoder.http.retrofit.HttpSend;
+import com.example.user.qrrecoder.utils.SharedPrefreUtils;
 import com.hdl.elog.ELog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,11 +50,13 @@ public class LoginActivity extends BaseFullScreenActivity {
     @BindView(R.id.cv)
     CardView cv;
 
+    private Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        mContext=this;
     }
 
     @OnClick(R.id.bt_go)
@@ -87,6 +92,7 @@ public class LoginActivity extends BaseFullScreenActivity {
                 user.setFname(loginResult.getFname());
                 user.setUsername(loginResult.getFusername());
                 user.setEmail(loginResult.getFmail());
+                SharedPrefreUtils.getInstance().putStringData(mContext, SPKey.SP_ACTIVEUSER,user.getFname());
                 EventBus.getDefault().postSticky(new UserAction(user));
                 finish();
             }

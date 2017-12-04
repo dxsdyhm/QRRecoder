@@ -4,6 +4,18 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:id="@+id/tx_scan_number"
+        android:layout_width="55dp"
+        android:text="0"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="24dp"
+        android:textColor="@color/color_ffffff"
+        android:gravity="center"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/selecter_scan"
+        android:layout_height="55dp" />
+
     <Button
         android:id="@+id/btn_stop"
         android:text="@string/stop_scan"

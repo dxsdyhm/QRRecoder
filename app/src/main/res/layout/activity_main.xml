@@ -16,19 +16,20 @@
         android:id="@+id/card_info"
         android:layout_width="match_parent"
         android:layout_height="145dp"
-        app:cardCornerRadius="4dp"
         android:layout_margin="16dp"
         android:layout_marginTop="8dp"
+        app:cardCornerRadius="4dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/base_toolbar">
 
         <TextView
             android:id="@+id/tx_userinfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="16dp"
-            android:lineSpacingExtra="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="5dp" />
 
     </android.support.v7.widget.CardView>
 
@@ -41,10 +42,25 @@
         android:background="@drawable/selecter_scan"
         android:text="@string/start_scan"
         android:textColor="@color/color_ffffff"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_info" />
 
+    <TextView
+        android:id="@+id/tx_scanresult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/upload_record"
+        android:padding="15dp"
+        android:textColor="@color/colorPrimary"
+        android:autoLink="all"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_scan"
+        app:layout_constraintVertical_bias="0.3" />
 
 </android.support.constraint.ConstraintLayout>

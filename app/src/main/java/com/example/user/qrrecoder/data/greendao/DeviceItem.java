@@ -21,8 +21,9 @@ import java.text.DateFormat;
 
 @Entity
 public class DeviceItem{
+    @Id private Long id;
     @Expose
-    @Index
+    @Index(unique = true)
     @NotNull
     private int fdeviceid;
     @Expose
@@ -45,10 +46,11 @@ public class DeviceItem{
     private String fstatus;
     @Expose
     private String fdes;//描述
-    @Generated(hash = 380219941)
-    public DeviceItem(int fdeviceid, int fid, @NotNull String fdeviceuuid,
+    @Generated(hash = 306625901)
+    public DeviceItem(Long id, int fdeviceid, int fid, @NotNull String fdeviceuuid,
             long fscantime, int serverState, String faccount, String fcreate,
             long ftime, String fstatus, String fdes) {
+        this.id = id;
         this.fdeviceid = fdeviceid;
         this.fid = fid;
         this.fdeviceuuid = fdeviceuuid;
@@ -126,6 +128,7 @@ public class DeviceItem{
                 ", fid=" + fid +
                 ", fdeviceuuid='" + fdeviceuuid + '\'' +
                 ", fscantime=" + fscantime +
+                ", serverState=" + serverState +
                 ", faccount='" + faccount + '\'' +
                 ", fcreate='" + fcreate + '\'' +
                 ", ftime=" + ftime +
@@ -133,10 +136,17 @@ public class DeviceItem{
                 ", fdes='" + fdes + '\'' +
                 '}';
     }
+
     public int getServerState() {
         return this.serverState;
     }
     public void setServerState(int serverState) {
         this.serverState = serverState;
+    }
+    public Long getId() {
+        return this.id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
  */
 
 public class SharedPrefreUtils {
-    private static final String SP_FILE_GWELL = "p2p";
+    private static final String SP_FILE_GWELL = "scan";
     private static class SharedPrefreHolder {
         private static final SharedPrefreUtils INSTANCE = new SharedPrefreUtils();
     }

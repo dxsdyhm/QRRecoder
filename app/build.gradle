@@ -17,11 +17,15 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            resValue("string", "PORT_NUMBER", "8081")
+        }
     }
 }
 
 greendao {
-    schemaVersion 13
+    schemaVersion 14
     daoPackage 'com.example.user.qrrecoder.data.greendaoauto'
     targetGenDir 'src/main/java'
 }

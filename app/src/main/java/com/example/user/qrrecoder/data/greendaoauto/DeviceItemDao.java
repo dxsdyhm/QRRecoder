@@ -15,7 +15,7 @@ import com.example.user.qrrecoder.data.greendao.DeviceItem;
 /** 
  * DAO for table "DEVICE_ITEM".
 */
-public class DeviceItemDao extends AbstractDao<DeviceItem, Void> {
+public class DeviceItemDao extends AbstractDao<DeviceItem, Long> {
 
     public static final String TABLENAME = "DEVICE_ITEM";
 
@@ -24,16 +24,17 @@ public class DeviceItemDao extends AbstractDao<DeviceItem, Void> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Fdeviceid = new Property(0, int.class, "fdeviceid", false, "FDEVICEID");
-        public final static Property Fid = new Property(1, int.class, "fid", false, "FID");
-        public final static Property Fdeviceuuid = new Property(2, String.class, "fdeviceuuid", false, "FDEVICEUUID");
-        public final static Property Fscantime = new Property(3, long.class, "fscantime", false, "FSCANTIME");
-        public final static Property ServerState = new Property(4, int.class, "serverState", false, "SERVER_STATE");
-        public final static Property Faccount = new Property(5, String.class, "faccount", false, "FACCOUNT");
-        public final static Property Fcreate = new Property(6, String.class, "fcreate", false, "FCREATE");
-        public final static Property Ftime = new Property(7, long.class, "ftime", false, "FTIME");
-        public final static Property Fstatus = new Property(8, String.class, "fstatus", false, "FSTATUS");
-        public final static Property Fdes = new Property(9, String.class, "fdes", false, "FDES");
+        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Fdeviceid = new Property(1, int.class, "fdeviceid", false, "FDEVICEID");
+        public final static Property Fid = new Property(2, int.class, "fid", false, "FID");
+        public final static Property Fdeviceuuid = new Property(3, String.class, "fdeviceuuid", false, "FDEVICEUUID");
+        public final static Property Fscantime = new Property(4, long.class, "fscantime", false, "FSCANTIME");
+        public final static Property ServerState = new Property(5, int.class, "serverState", false, "SERVER_STATE");
+        public final static Property Faccount = new Property(6, String.class, "faccount", false, "FACCOUNT");
+        public final static Property Fcreate = new Property(7, String.class, "fcreate", false, "FCREATE");
+        public final static Property Ftime = new Property(8, long.class, "ftime", false, "FTIME");
+        public final static Property Fstatus = new Property(9, String.class, "fstatus", false, "FSTATUS");
+        public final static Property Fdes = new Property(10, String.class, "fdes", false, "FDES");
     }
 
 
@@ -49,18 +50,19 @@ public class DeviceItemDao extends AbstractDao<DeviceItem, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"DEVICE_ITEM\" (" + //
-                "\"FDEVICEID\" INTEGER NOT NULL ," + // 0: fdeviceid
-                "\"FID\" INTEGER NOT NULL ," + // 1: fid
-                "\"FDEVICEUUID\" TEXT NOT NULL ," + // 2: fdeviceuuid
-                "\"FSCANTIME\" INTEGER NOT NULL ," + // 3: fscantime
-                "\"SERVER_STATE\" INTEGER NOT NULL ," + // 4: serverState
-                "\"FACCOUNT\" TEXT," + // 5: faccount
-                "\"FCREATE\" TEXT," + // 6: fcreate
-                "\"FTIME\" INTEGER NOT NULL ," + // 7: ftime
-                "\"FSTATUS\" TEXT," + // 8: fstatus
-                "\"FDES\" TEXT);"); // 9: fdes
+                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
+                "\"FDEVICEID\" INTEGER NOT NULL ," + // 1: fdeviceid
+                "\"FID\" INTEGER NOT NULL ," + // 2: fid
+                "\"FDEVICEUUID\" TEXT NOT NULL ," + // 3: fdeviceuuid
+                "\"FSCANTIME\" INTEGER NOT NULL ," + // 4: fscantime
+                "\"SERVER_STATE\" INTEGER NOT NULL ," + // 5: serverState
+                "\"FACCOUNT\" TEXT," + // 6: faccount
+                "\"FCREATE\" TEXT," + // 7: fcreate
+                "\"FTIME\" INTEGER NOT NULL ," + // 8: ftime
+                "\"FSTATUS\" TEXT," + // 9: fstatus
+                "\"FDES\" TEXT);"); // 10: fdes
         // Add Indexes
-        db.execSQL("CREATE INDEX " + constraint + "IDX_DEVICE_ITEM_FDEVICEID ON \"DEVICE_ITEM\"" +
+        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_DEVICE_ITEM_FDEVICEID ON \"DEVICE_ITEM\"" +
                 " (\"FDEVICEID\" ASC);");
         db.execSQL("CREATE INDEX " + constraint + "IDX_DEVICE_ITEM_FID ON \"DEVICE_ITEM\"" +
                 " (\"FID\" ASC);");
@@ -75,116 +77,131 @@ public class DeviceItemDao extends AbstractDao<DeviceItem, Void> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, DeviceItem entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getFdeviceid());
-        stmt.bindLong(2, entity.getFid());
-        stmt.bindString(3, entity.getFdeviceuuid());
-        stmt.bindLong(4, entity.getFscantime());
-        stmt.bindLong(5, entity.getServerState());
+ 
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+        stmt.bindLong(2, entity.getFdeviceid());
+        stmt.bindLong(3, entity.getFid());
+        stmt.bindString(4, entity.getFdeviceuuid());
+        stmt.bindLong(5, entity.getFscantime());
+        stmt.bindLong(6, entity.getServerState());
  
         String faccount = entity.getFaccount();
         if (faccount != null) {
-            stmt.bindString(6, faccount);
+            stmt.bindString(7, faccount);
         }
  
         String fcreate = entity.getFcreate();
         if (fcreate != null) {
-            stmt.bindString(7, fcreate);
+            stmt.bindString(8, fcreate);
         }
-        stmt.bindLong(8, entity.getFtime());
+        stmt.bindLong(9, entity.getFtime());
  
         String fstatus = entity.getFstatus();
         if (fstatus != null) {
-            stmt.bindString(9, fstatus);
+            stmt.bindString(10, fstatus);
         }
  
         String fdes = entity.getFdes();
         if (fdes != null) {
-            stmt.bindString(10, fdes);
+            stmt.bindString(11, fdes);
         }
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, DeviceItem entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getFdeviceid());
-        stmt.bindLong(2, entity.getFid());
-        stmt.bindString(3, entity.getFdeviceuuid());
-        stmt.bindLong(4, entity.getFscantime());
-        stmt.bindLong(5, entity.getServerState());
+ 
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+        stmt.bindLong(2, entity.getFdeviceid());
+        stmt.bindLong(3, entity.getFid());
+        stmt.bindString(4, entity.getFdeviceuuid());
+        stmt.bindLong(5, entity.getFscantime());
+        stmt.bindLong(6, entity.getServerState());
  
         String faccount = entity.getFaccount();
         if (faccount != null) {
-            stmt.bindString(6, faccount);
+            stmt.bindString(7, faccount);
         }
  
         String fcreate = entity.getFcreate();
         if (fcreate != null) {
-            stmt.bindString(7, fcreate);
+            stmt.bindString(8, fcreate);
         }
-        stmt.bindLong(8, entity.getFtime());
+        stmt.bindLong(9, entity.getFtime());
  
         String fstatus = entity.getFstatus();
         if (fstatus != null) {
-            stmt.bindString(9, fstatus);
+            stmt.bindString(10, fstatus);
         }
  
         String fdes = entity.getFdes();
         if (fdes != null) {
-            stmt.bindString(10, fdes);
+            stmt.bindString(11, fdes);
         }
     }
 
     @Override
-    public Void readKey(Cursor cursor, int offset) {
-        return null;
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public DeviceItem readEntity(Cursor cursor, int offset) {
         DeviceItem entity = new DeviceItem( //
-            cursor.getInt(offset + 0), // fdeviceid
-            cursor.getInt(offset + 1), // fid
-            cursor.getString(offset + 2), // fdeviceuuid
-            cursor.getLong(offset + 3), // fscantime
-            cursor.getInt(offset + 4), // serverState
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // faccount
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // fcreate
-            cursor.getLong(offset + 7), // ftime
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // fstatus
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // fdes
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+            cursor.getInt(offset + 1), // fdeviceid
+            cursor.getInt(offset + 2), // fid
+            cursor.getString(offset + 3), // fdeviceuuid
+            cursor.getLong(offset + 4), // fscantime
+            cursor.getInt(offset + 5), // serverState
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // faccount
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // fcreate
+            cursor.getLong(offset + 8), // ftime
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // fstatus
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // fdes
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, DeviceItem entity, int offset) {
-        entity.setFdeviceid(cursor.getInt(offset + 0));
-        entity.setFid(cursor.getInt(offset + 1));
-        entity.setFdeviceuuid(cursor.getString(offset + 2));
-        entity.setFscantime(cursor.getLong(offset + 3));
-        entity.setServerState(cursor.getInt(offset + 4));
-        entity.setFaccount(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setFcreate(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setFtime(cursor.getLong(offset + 7));
-        entity.setFstatus(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setFdes(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setFdeviceid(cursor.getInt(offset + 1));
+        entity.setFid(cursor.getInt(offset + 2));
+        entity.setFdeviceuuid(cursor.getString(offset + 3));
+        entity.setFscantime(cursor.getLong(offset + 4));
+        entity.setServerState(cursor.getInt(offset + 5));
+        entity.setFaccount(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setFcreate(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setFtime(cursor.getLong(offset + 8));
+        entity.setFstatus(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setFdes(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
      }
     
     @Override
-    protected final Void updateKeyAfterInsert(DeviceItem entity, long rowId) {
-        // Unsupported or missing PK type
-        return null;
+    protected final Long updateKeyAfterInsert(DeviceItem entity, long rowId) {
+        entity.setId(rowId);
+        return rowId;
     }
     
     @Override
-    public Void getKey(DeviceItem entity) {
-        return null;
+    public Long getKey(DeviceItem entity) {
+        if(entity != null) {
+            return entity.getId();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public boolean hasKey(DeviceItem entity) {
-        // TODO
-        return false;
+        return entity.getId() != null;
     }
 
     @Override

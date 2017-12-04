@@ -16,4 +16,7 @@
     <string name="scan_result">扫码结果</string>
     <string name="scan_uploading">正在上传扫码结果...</string>
     <string name="upload_success">%s条记录上传成功</string>
+    <string name="upload_record">查看扫码记录</string>
+    <string name="scanrecord_empty">没有未上传的扫码记录</string>
+    <string name="error_qrillegl">二维码不正确</string>
 </resources>

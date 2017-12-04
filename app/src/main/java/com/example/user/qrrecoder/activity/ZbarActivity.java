@@ -1,11 +1,11 @@
 package com.example.user.qrrecoder.activity;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.qrrecoder.R;
@@ -13,26 +13,28 @@ import com.example.user.qrrecoder.base.BaseFullScreenActivity;
 import com.example.user.qrrecoder.data.greendao.DeviceItem;
 import com.example.user.qrrecoder.data.greendaoutil.DBUtils;
 import com.example.user.qrrecoder.utils.DeviceUtils;
+import com.example.user.qrrecoder.utils.MusicUtils;
+import com.example.user.qrrecoder.utils.ToastUtils;
 import com.hdl.elog.ELog;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zbar.ZBarView;
-import io.reactivex.Observer;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by USER on 2017/11/10.
  */
 
 public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.Delegate {
+    private final static String FORMAT_TOAST="扫描成功\n设备ID:%s\n设备序列号:%s";
     @BindView(R.id.zbarview)
     ZBarView zbarview;
     @BindView(R.id.btn_stop)
     Button btnStop;
+    @BindView(R.id.tx_scan_number)
+    TextView txScanNumber;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,9 +46,10 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
 
     private void initZbar() {
         zbarview.setDelegate(this);
+        changeCount(0);
     }
 
-    private void starCamer(){
+    private void starCamer() {
         zbarview.startSpotDelay(800);
         zbarview.startCamera();
 //        zbarview.startCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
@@ -54,28 +57,26 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
     }
 
 
-
     @Override
     public void onScanQRCodeSuccess(String result) {
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         zbarview.startSpotDelay(800);
-        int deviceid=(int)(Math.random()*100000);
-        long time=System.currentTimeMillis();
-        if(DeviceUtils.isLegal(result)){
-            DeviceItem item=new DeviceItem();
-            item.setFdeviceid(deviceid);
-            item.setFdeviceuuid(result);
-            item.setFscantime(time);
-            item.setFcreate("0");
-            item.setFstatus("1");
-//            item.setServerState(1);
-            item.setFdes(result);
-            item.setFid(1);
-            item.setFaccount("dxs");
-            DBUtils.getDeviceItemService().saveOrUpdate(item);
-            ELog.dxs("result:"+result);
+        try {
+            String deviceInfo=DeviceUtils.getDeviceinfo(result);
+            if (deviceInfo!=null) {
+                DeviceItem item = CreateDeviceItem(deviceInfo);
+                DBUtils.getDeviceItemService().saveOrUpdate(item);
+                ToastUtils.ShowScanSuccess(this,getToastContent(item));
+                changeCount(DBUtils.getDeviceItemService().count());
+                ding();
+                vibrate();
+            }else{
+                throw new IllegalArgumentException("deviceInfo is null");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            //二维码不正确
+            ToastUtils.ShowError(this,getErrorQR(result),1500,true);
         }
-        vibrate();
     }
 
     private void vibrate() {
@@ -83,9 +84,51 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
         vibrator.vibrate(200);
     }
 
+    private MusicUtils musictils;
+    private void ding(){
+        if(musictils==null){
+            musictils=new MusicUtils();
+            musictils.initPoolMusic(this,R.raw.ding);
+        }
+        musictils.playPoolMusic();
+    }
+
     @Override
     public void onScanQRCodeOpenCameraError() {
         ELog.dxs("打开相机出错");
+    }
+
+    private void changeCount(long count){
+        txScanNumber.setText(String.valueOf(count));
+    }
+
+    private String getToastContent(DeviceItem item){
+        return String.format(FORMAT_TOAST,item.getFdeviceid(),item.getFdeviceuuid());
+    }
+
+    //扫码得到的信息创建设备(会抛异常)
+    private DeviceItem CreateDeviceItem(String deviceInfo){
+        long time = System.currentTimeMillis();
+        String[] info=DeviceUtils.getDeviceInfoFromeUrl(deviceInfo);
+        DeviceItem item = new DeviceItem();
+        item.setFdeviceuuid(info[0]);
+        item.setFdeviceid(Integer.parseInt(info[1]));
+        item.setFscantime(time);
+        item.setFcreate("0");
+        item.setFstatus("1");
+        item.setFdes(deviceInfo);
+        item.setFid(1);
+        item.setFaccount("dxs");
+        return item;
+    }
+
+    //拼接不正确二维码提示("不正确的二维码(result)")
+    private String getErrorQR(String result){
+        StringBuilder sb=new StringBuilder(getString(R.string.error_qrillegl));
+        sb.append("(");
+        sb.append(result);
+        sb.append(")");
+        return sb.toString();
     }
 
     @Override
@@ -103,12 +146,25 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
     @Override
     protected void onDestroy() {
         zbarview.onDestroy();
+        if(musictils!=null){
+            musictils.releaseMusic();
+        }
         super.onDestroy();
     }
 
     @OnClick(R.id.btn_stop)
     public void onViewClicked() {
-        Intent list=new Intent(this,ScanResultActivity.class);
-        startActivity(list);
+        Intent list = new Intent(this, ScanResultActivity.class);
+        startActivityForResult(list,1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1){
+            if(resultCode==RESULT_OK){
+                changeCount(0);
+            }
+        }
     }
 }

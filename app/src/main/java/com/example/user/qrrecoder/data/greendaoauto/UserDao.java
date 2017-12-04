@@ -15,7 +15,7 @@ import com.example.user.qrrecoder.data.greendao.User;
 /** 
  * DAO for table "USER".
 */
-public class UserDao extends AbstractDao<User, Void> {
+public class UserDao extends AbstractDao<User, Long> {
 
     public static final String TABLENAME = "USER";
 
@@ -24,11 +24,12 @@ public class UserDao extends AbstractDao<User, Void> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Userid = new Property(0, int.class, "userid", false, "USERID");
-        public final static Property Username = new Property(1, String.class, "username", false, "USERNAME");
-        public final static Property Fname = new Property(2, String.class, "fname", false, "FNAME");
-        public final static Property Userpwd = new Property(3, String.class, "userpwd", false, "USERPWD");
-        public final static Property Email = new Property(4, String.class, "email", false, "EMAIL");
+        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Userid = new Property(1, int.class, "userid", false, "USERID");
+        public final static Property Username = new Property(2, String.class, "username", false, "USERNAME");
+        public final static Property Fname = new Property(3, String.class, "fname", false, "FNAME");
+        public final static Property Userpwd = new Property(4, String.class, "userpwd", false, "USERPWD");
+        public final static Property Email = new Property(5, String.class, "email", false, "EMAIL");
     }
 
 
@@ -44,11 +45,12 @@ public class UserDao extends AbstractDao<User, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER\" (" + //
-                "\"USERID\" INTEGER NOT NULL ," + // 0: userid
-                "\"USERNAME\" TEXT," + // 1: username
-                "\"FNAME\" TEXT," + // 2: fname
-                "\"USERPWD\" TEXT," + // 3: userpwd
-                "\"EMAIL\" TEXT);"); // 4: email
+                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
+                "\"USERID\" INTEGER NOT NULL ," + // 1: userid
+                "\"USERNAME\" TEXT," + // 2: username
+                "\"FNAME\" TEXT," + // 3: fname
+                "\"USERPWD\" TEXT," + // 4: userpwd
+                "\"EMAIL\" TEXT);"); // 5: email
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_USERID ON \"USER\"" +
                 " (\"USERID\" ASC);");
@@ -63,96 +65,111 @@ public class UserDao extends AbstractDao<User, Void> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, User entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getUserid());
+ 
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+        stmt.bindLong(2, entity.getUserid());
  
         String username = entity.getUsername();
         if (username != null) {
-            stmt.bindString(2, username);
+            stmt.bindString(3, username);
         }
  
         String fname = entity.getFname();
         if (fname != null) {
-            stmt.bindString(3, fname);
+            stmt.bindString(4, fname);
         }
  
         String userpwd = entity.getUserpwd();
         if (userpwd != null) {
-            stmt.bindString(4, userpwd);
+            stmt.bindString(5, userpwd);
         }
  
         String email = entity.getEmail();
         if (email != null) {
-            stmt.bindString(5, email);
+            stmt.bindString(6, email);
         }
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, User entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getUserid());
+ 
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+        stmt.bindLong(2, entity.getUserid());
  
         String username = entity.getUsername();
         if (username != null) {
-            stmt.bindString(2, username);
+            stmt.bindString(3, username);
         }
  
         String fname = entity.getFname();
         if (fname != null) {
-            stmt.bindString(3, fname);
+            stmt.bindString(4, fname);
         }
  
         String userpwd = entity.getUserpwd();
         if (userpwd != null) {
-            stmt.bindString(4, userpwd);
+            stmt.bindString(5, userpwd);
         }
  
         String email = entity.getEmail();
         if (email != null) {
-            stmt.bindString(5, email);
+            stmt.bindString(6, email);
         }
     }
 
     @Override
-    public Void readKey(Cursor cursor, int offset) {
-        return null;
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public User readEntity(Cursor cursor, int offset) {
         User entity = new User( //
-            cursor.getInt(offset + 0), // userid
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // username
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // fname
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // userpwd
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // email
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+            cursor.getInt(offset + 1), // userid
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // username
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // fname
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // userpwd
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // email
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, User entity, int offset) {
-        entity.setUserid(cursor.getInt(offset + 0));
-        entity.setUsername(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setFname(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setUserpwd(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setEmail(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setUserid(cursor.getInt(offset + 1));
+        entity.setUsername(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setFname(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setUserpwd(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setEmail(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
      }
     
     @Override
-    protected final Void updateKeyAfterInsert(User entity, long rowId) {
-        // Unsupported or missing PK type
-        return null;
+    protected final Long updateKeyAfterInsert(User entity, long rowId) {
+        entity.setId(rowId);
+        return rowId;
     }
     
     @Override
-    public Void getKey(User entity) {
-        return null;
+    public Long getKey(User entity) {
+        if(entity != null) {
+            return entity.getId();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public boolean hasKey(User entity) {
-        // TODO
-        return false;
+        return entity.getId() != null;
     }
 
     @Override

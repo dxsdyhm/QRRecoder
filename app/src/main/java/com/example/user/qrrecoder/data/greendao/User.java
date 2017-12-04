@@ -16,15 +16,17 @@ import java.util.List;
  */
 @Entity
 public class User {
+    @Id private Long id;
     @Index(unique = true)
     private int userid;
     private String username;
     private String fname;
     private String userpwd;
     private String email;
-    @Generated(hash = 178867410)
-    public User(int userid, String username, String fname, String userpwd,
+    @Generated(hash = 739195874)
+    public User(Long id, int userid, String username, String fname, String userpwd,
             String email) {
+        this.id = id;
         this.userid = userid;
         this.username = username;
         this.fname = fname;
@@ -63,6 +65,12 @@ public class User {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public Long getId() {
+        return this.id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
   
 }
