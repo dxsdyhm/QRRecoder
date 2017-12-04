@@ -5,25 +5,25 @@ package com.example.user.qrrecoder.http.Enty;
  */
 
 public class HttpResults<T> {
-    private String resultCode;
-    private String resultMessage;
+    private String error_code;
+    private String error;
 
     private T data;
 
-    public String getResultCode() {
-        return resultCode;
+    public String getError_code() {
+        return error_code;
     }
 
-    public void setResultCode(String resultCode) {
-        this.resultCode = resultCode;
+    public void setError_code(String error_code) {
+        this.error_code = error_code;
     }
 
-    public String getResultMessage() {
-        return resultMessage;
+    public String getError() {
+        return error;
     }
 
-    public void setResultMessage(String resultMessage) {
-        this.resultMessage = resultMessage;
+    public void setError(String error) {
+        this.error = error;
     }
 
     public T getData() {

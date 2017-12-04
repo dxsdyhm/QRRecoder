@@ -7,8 +7,8 @@ android {
         applicationId "com.example.user.qrrecoder"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 7
+        versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -21,7 +21,7 @@ android {
 }
 
 greendao {
-    schemaVersion 5
+    schemaVersion 13
     daoPackage 'com.example.user.qrrecoder.data.greendaoauto'
     targetGenDir 'src/main/java'
 }
@@ -63,8 +63,13 @@ dependencies {
     compile'com.squareup.retrofit2:retrofit:2.3.0'
     compile'com.squareup.retrofit2:converter-gson:2.2.0'
     compile'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+    //okhttp-cookie
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.6.0'
     //dialog
     compile 'com.afollestad.material-dialogs:core:0.9.5.0'
     //permission
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+
 }

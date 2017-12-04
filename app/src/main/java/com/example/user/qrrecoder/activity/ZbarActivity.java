@@ -59,13 +59,20 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
     public void onScanQRCodeSuccess(String result) {
         Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         zbarview.startSpotDelay(800);
-        result=String.valueOf((int)(Math.random()*100000));
+        int deviceid=(int)(Math.random()*100000);
         long time=System.currentTimeMillis();
         if(DeviceUtils.isLegal(result)){
-            DeviceItem item=new DeviceItem(result,"1",time, (int) ((Math.random()*1000)%2));
-            DeviceItem item1=new DeviceItem(result,"2",time, (int) ((Math.random()*1000)%2));
-            DeviceItem item2=new DeviceItem(result,"3",time, (int) ((Math.random()*1000)%2));
-            DBUtils.getDeviceItemService().saveOrUpdate(item,item1,item2);
+            DeviceItem item=new DeviceItem();
+            item.setFdeviceid(deviceid);
+            item.setFdeviceuuid(result);
+            item.setFscantime(time);
+            item.setFcreate("0");
+            item.setFstatus("1");
+//            item.setServerState(1);
+            item.setFdes(result);
+            item.setFid(1);
+            item.setFaccount("dxs");
+            DBUtils.getDeviceItemService().saveOrUpdate(item);
             ELog.dxs("result:"+result);
         }
         vibrate();

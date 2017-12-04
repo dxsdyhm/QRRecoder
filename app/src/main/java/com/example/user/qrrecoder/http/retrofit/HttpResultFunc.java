@@ -1,5 +1,7 @@
 package com.example.user.qrrecoder.http.retrofit;
 
+import android.util.Log;
+
 import com.example.user.qrrecoder.http.Enty.HttpResult;
 import com.example.user.qrrecoder.http.Enty.HttpResults;
 
@@ -14,8 +16,9 @@ import io.reactivex.functions.Function;
 public class HttpResultFunc<T > implements Function<HttpResults<T>,T> {
     @Override
     public T apply(HttpResults<T> tHttpResults) throws Exception {
-        if (tHttpResults.getResultCode().equals("0")) {
-            throw new ApiException(tHttpResults.getResultCode());
+        Log.e("dxsTest","tHttpResults:"+tHttpResults);
+        if (!tHttpResults.getError_code().equals("0")) {
+            throw new ApiException(tHttpResults.getError_code());
         }
         return tHttpResults.getData();
     }

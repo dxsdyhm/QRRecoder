@@ -2,26 +2,31 @@ package com.example.user.qrrecoder.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.user.qrrecoder.R;
 import com.example.user.qrrecoder.adapter.DeviceItemViewBinder;
 import com.example.user.qrrecoder.base.BaseActivity;
 import com.example.user.qrrecoder.data.greendao.DeviceItem;
-import com.example.user.qrrecoder.data.greendao.User;
 import com.example.user.qrrecoder.data.greendaoauto.DeviceItemDao;
-import com.example.user.qrrecoder.data.greendaoauto.UserDao;
 import com.example.user.qrrecoder.data.greendaoutil.DBUtils;
+import com.example.user.qrrecoder.entity.UploadRecords;
+import com.example.user.qrrecoder.http.Enty.HttpResults;
+import com.example.user.qrrecoder.http.retrofit.HttpSend;
 import com.hdl.elog.ELog;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
@@ -32,8 +37,11 @@ import me.drakeet.multitype.MultiTypeAdapter;
 public class ScanResultActivity extends BaseActivity {
     @BindView(R.id.recy_deviceitem)
     RecyclerView recyDeviceitem;
+    @BindView(R.id.fab_upload)
+    FloatingActionButton fabUpload;
     private MultiTypeAdapter adapter;
     private Items items;
+    private List<DeviceItem> deviceItems;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +57,7 @@ public class ScanResultActivity extends BaseActivity {
 
     @Override
     public void setToolBarTitle() {
-        if(toolbar!=null){
+        if (toolbar != null) {
             toolbar.setTitle(R.string.scan_result);
         }
     }
@@ -62,13 +70,54 @@ public class ScanResultActivity extends BaseActivity {
         recyDeviceitem.setAdapter(adapter);
 
         items = new Items();
-        QueryBuilder<DeviceItem> builder=DBUtils.getDeviceItemService().queryBuilder();
-        builder.where(DeviceItemDao.Properties.Userid.eq("1"));
-        builder.orderDesc(DeviceItemDao.Properties.Recordtime);
-        items.addAll(builder.list());
-        ELog.dxs("size:"+items.size());
+        QueryBuilder<DeviceItem> builder = DBUtils.getDeviceItemService().queryBuilder();
+//        builder.where(DeviceItemDao.Properties.Faccount.eq("dxs"));
+        builder.orderDesc(DeviceItemDao.Properties.Fscantime);
+        deviceItems=builder.list();
+        items.addAll(deviceItems);
+        ELog.dxs("size:" + items.size());
 
         adapter.setItems(items);
-        adapter.notifyItemRangeChanged(0,items.size()-1);
+        adapter.notifyItemRangeChanged(0, items.size() - 1);
+
+    }
+
+    private MaterialDialog.Builder builder;
+    private void createDialog(){
+        builder = new MaterialDialog.Builder(this)
+                .title(R.string.app_name)
+                .content(R.string.logining)
+                .progress(true,0);
+    }
+
+    @OnClick(R.id.fab_upload)
+    public void onViewClicked() {
+        createDialog();
+        final MaterialDialog dialog = builder.build();
+        Observer<HttpResults> observer =new Observer<HttpResults>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                dialog.show();
+            }
+
+            @Override
+            public void onNext(HttpResults httpResults) {
+                ELog.dxs("httpResults:"+httpResults.getError());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                dialog.dismiss();
+                ELog.dxs("httpResults:"+e);
+            }
+
+            @Override
+            public void onComplete() {
+                dialog.dismiss();
+                ELog.dxs("onComplete:");
+            }
+        };
+        UploadRecords records=new UploadRecords("1",deviceItems);
+        HttpSend.getInstence().uploadRecord(records,observer);
     }
 }

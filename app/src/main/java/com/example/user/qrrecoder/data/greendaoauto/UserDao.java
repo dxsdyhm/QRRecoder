@@ -24,9 +24,11 @@ public class UserDao extends AbstractDao<User, Void> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Userid = new Property(0, String.class, "userid", false, "USERID");
+        public final static Property Userid = new Property(0, int.class, "userid", false, "USERID");
         public final static Property Username = new Property(1, String.class, "username", false, "USERNAME");
-        public final static Property Userpwd = new Property(2, String.class, "userpwd", false, "USERPWD");
+        public final static Property Fname = new Property(2, String.class, "fname", false, "FNAME");
+        public final static Property Userpwd = new Property(3, String.class, "userpwd", false, "USERPWD");
+        public final static Property Email = new Property(4, String.class, "email", false, "EMAIL");
     }
 
 
@@ -42,9 +44,11 @@ public class UserDao extends AbstractDao<User, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER\" (" + //
-                "\"USERID\" TEXT," + // 0: userid
+                "\"USERID\" INTEGER NOT NULL ," + // 0: userid
                 "\"USERNAME\" TEXT," + // 1: username
-                "\"USERPWD\" TEXT);"); // 2: userpwd
+                "\"FNAME\" TEXT," + // 2: fname
+                "\"USERPWD\" TEXT," + // 3: userpwd
+                "\"EMAIL\" TEXT);"); // 4: email
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_USERID ON \"USER\"" +
                 " (\"USERID\" ASC);");
@@ -59,40 +63,52 @@ public class UserDao extends AbstractDao<User, Void> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, User entity) {
         stmt.clearBindings();
- 
-        String userid = entity.getUserid();
-        if (userid != null) {
-            stmt.bindString(1, userid);
-        }
+        stmt.bindLong(1, entity.getUserid());
  
         String username = entity.getUsername();
         if (username != null) {
             stmt.bindString(2, username);
         }
  
+        String fname = entity.getFname();
+        if (fname != null) {
+            stmt.bindString(3, fname);
+        }
+ 
         String userpwd = entity.getUserpwd();
         if (userpwd != null) {
-            stmt.bindString(3, userpwd);
+            stmt.bindString(4, userpwd);
+        }
+ 
+        String email = entity.getEmail();
+        if (email != null) {
+            stmt.bindString(5, email);
         }
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, User entity) {
         stmt.clearBindings();
- 
-        String userid = entity.getUserid();
-        if (userid != null) {
-            stmt.bindString(1, userid);
-        }
+        stmt.bindLong(1, entity.getUserid());
  
         String username = entity.getUsername();
         if (username != null) {
             stmt.bindString(2, username);
         }
  
+        String fname = entity.getFname();
+        if (fname != null) {
+            stmt.bindString(3, fname);
+        }
+ 
         String userpwd = entity.getUserpwd();
         if (userpwd != null) {
-            stmt.bindString(3, userpwd);
+            stmt.bindString(4, userpwd);
+        }
+ 
+        String email = entity.getEmail();
+        if (email != null) {
+            stmt.bindString(5, email);
         }
     }
 
@@ -104,18 +120,22 @@ public class UserDao extends AbstractDao<User, Void> {
     @Override
     public User readEntity(Cursor cursor, int offset) {
         User entity = new User( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // userid
+            cursor.getInt(offset + 0), // userid
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // username
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // userpwd
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // fname
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // userpwd
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // email
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, User entity, int offset) {
-        entity.setUserid(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setUserid(cursor.getInt(offset + 0));
         entity.setUsername(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setUserpwd(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setFname(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setUserpwd(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setEmail(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }
     
     @Override

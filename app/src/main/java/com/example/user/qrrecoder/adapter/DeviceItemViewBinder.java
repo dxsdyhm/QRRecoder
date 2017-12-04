@@ -34,7 +34,7 @@ public class DeviceItemViewBinder extends ItemViewBinder<DeviceItem, DeviceItemV
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull DeviceItem item) {
         holder.textNumber.setText(String.valueOf(holder.getAdapterPosition()+1));
-        holder.textDeviceID.setText(item.getDeviceid());
+        holder.textDeviceID.setText(String.valueOf(item.getFdeviceid()));
         holder.textServerState.setText(getServerStateString(item));
         holder.textRecoderTime.setText(getRecordTimeString(item));
     }
@@ -54,16 +54,16 @@ public class DeviceItemViewBinder extends ItemViewBinder<DeviceItem, DeviceItemV
     }
 
     private String getServerStateString(DeviceItem item){
-        if(item.getServerState()==0){
-            return "未上传";
-        }else if(item.getServerState()==1){
-            return "已上传";
-        }
-        return String.valueOf(item.getServerState());
+//        if(item.getServerState()==0){
+//            return "未上传";
+//        }else if(item.getServerState()==1){
+//            return "已上传";
+//        }
+        return "1";//String.valueOf(item.getServerState());
     }
 
     private String getRecordTimeString(DeviceItem item){
-        Date date=new Date(item.getRecordtime());
+        Date date=new Date(item.getFscantime());
         DateFormat format=new SimpleDateFormat(DATE_FORMAT);
         return format.format(date);
     }

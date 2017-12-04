@@ -17,22 +17,27 @@ import java.util.List;
 @Entity
 public class User {
     @Index(unique = true)
-    private String userid;
+    private int userid;
     private String username;
+    private String fname;
     private String userpwd;
-    @Generated(hash = 1133824401)
-    public User(String userid, String username, String userpwd) {
+    private String email;
+    @Generated(hash = 178867410)
+    public User(int userid, String username, String fname, String userpwd,
+            String email) {
         this.userid = userid;
         this.username = username;
+        this.fname = fname;
         this.userpwd = userpwd;
+        this.email = email;
     }
     @Generated(hash = 586692638)
     public User() {
     }
-    public String getUserid() {
+    public int getUserid() {
         return this.userid;
     }
-    public void setUserid(String userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
     public String getUsername() {
@@ -47,4 +52,17 @@ public class User {
     public void setUserpwd(String userpwd) {
         this.userpwd = userpwd;
     }
+    public String getFname() {
+        return this.fname;
+    }
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+    public String getEmail() {
+        return this.email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+  
 }
