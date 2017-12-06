@@ -166,5 +166,6 @@ public class MainActivity extends BaseActivity {
         Intent login = new Intent(this, LoginActivity.class);
         login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(login);
+        finish();
     }
 }

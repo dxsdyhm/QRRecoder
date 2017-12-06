@@ -50,18 +50,17 @@
                 <android.support.design.widget.TextInputLayout
                     android:textColorHint="#c5c5c5"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="40dp">
                     <EditText
                         android:textSize="13sp"
                         android:hint="@string/username"
                         android:textColor="#2fa881"
                         android:id="@+id/et_username"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:inputType="textPersonName"
                         android:background="@drawable/selector_bg_edit"
                         android:textCursorDrawable="@drawable/bg_input_cursor"
-                        android:paddingBottom="2dp"
                         />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
@@ -74,18 +73,17 @@
                 <android.support.design.widget.TextInputLayout
                     android:textColorHint="#c5c5c5"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="40dp">
                     <EditText
                         android:textSize="13sp"
                         android:hint="@string/passworld"
                         android:textColor="#2fa881"
                         android:id="@+id/et_password"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:inputType="textPassword"
                         android:background="@drawable/selector_bg_edit"
                         android:textCursorDrawable="@drawable/bg_input_cursor"
-                        android:paddingBottom="2dp"
                         />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
