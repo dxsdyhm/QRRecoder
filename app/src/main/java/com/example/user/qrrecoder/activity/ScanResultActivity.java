@@ -166,7 +166,7 @@ public class ScanResultActivity extends BaseActivity {
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        finish();
+                        toScanActivity();
                     }
                 })
                 .show();
@@ -217,5 +217,11 @@ public class ScanResultActivity extends BaseActivity {
         Intent login = new Intent(this, LoginActivity.class);
         login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(login);
+    }
+
+    private void toScanActivity(){
+        Intent login = new Intent(this, ZbarActivity.class);
+        startActivity(login);
+        finish();
     }
 }
