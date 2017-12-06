@@ -26,10 +26,12 @@ public class UserDao extends AbstractDao<User, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Userid = new Property(1, int.class, "userid", false, "USERID");
-        public final static Property Username = new Property(2, String.class, "username", false, "USERNAME");
-        public final static Property Fname = new Property(3, String.class, "fname", false, "FNAME");
-        public final static Property Userpwd = new Property(4, String.class, "userpwd", false, "USERPWD");
-        public final static Property Email = new Property(5, String.class, "email", false, "EMAIL");
+        public final static Property Acount = new Property(2, String.class, "acount", false, "ACOUNT");
+        public final static Property Username = new Property(3, String.class, "username", false, "USERNAME");
+        public final static Property Fname = new Property(4, String.class, "fname", false, "FNAME");
+        public final static Property Userpwd = new Property(5, String.class, "userpwd", false, "USERPWD");
+        public final static Property Email = new Property(6, String.class, "email", false, "EMAIL");
+        public final static Property Sessionid = new Property(7, int.class, "sessionid", false, "SESSIONID");
     }
 
 
@@ -47,10 +49,12 @@ public class UserDao extends AbstractDao<User, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"USER\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"USERID\" INTEGER NOT NULL ," + // 1: userid
-                "\"USERNAME\" TEXT," + // 2: username
-                "\"FNAME\" TEXT," + // 3: fname
-                "\"USERPWD\" TEXT," + // 4: userpwd
-                "\"EMAIL\" TEXT);"); // 5: email
+                "\"ACOUNT\" TEXT," + // 2: acount
+                "\"USERNAME\" TEXT," + // 3: username
+                "\"FNAME\" TEXT," + // 4: fname
+                "\"USERPWD\" TEXT," + // 5: userpwd
+                "\"EMAIL\" TEXT," + // 6: email
+                "\"SESSIONID\" INTEGER NOT NULL );"); // 7: sessionid
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_USERID ON \"USER\"" +
                 " (\"USERID\" ASC);");
@@ -72,25 +76,31 @@ public class UserDao extends AbstractDao<User, Long> {
         }
         stmt.bindLong(2, entity.getUserid());
  
+        String acount = entity.getAcount();
+        if (acount != null) {
+            stmt.bindString(3, acount);
+        }
+ 
         String username = entity.getUsername();
         if (username != null) {
-            stmt.bindString(3, username);
+            stmt.bindString(4, username);
         }
  
         String fname = entity.getFname();
         if (fname != null) {
-            stmt.bindString(4, fname);
+            stmt.bindString(5, fname);
         }
  
         String userpwd = entity.getUserpwd();
         if (userpwd != null) {
-            stmt.bindString(5, userpwd);
+            stmt.bindString(6, userpwd);
         }
  
         String email = entity.getEmail();
         if (email != null) {
-            stmt.bindString(6, email);
+            stmt.bindString(7, email);
         }
+        stmt.bindLong(8, entity.getSessionid());
     }
 
     @Override
@@ -103,25 +113,31 @@ public class UserDao extends AbstractDao<User, Long> {
         }
         stmt.bindLong(2, entity.getUserid());
  
+        String acount = entity.getAcount();
+        if (acount != null) {
+            stmt.bindString(3, acount);
+        }
+ 
         String username = entity.getUsername();
         if (username != null) {
-            stmt.bindString(3, username);
+            stmt.bindString(4, username);
         }
  
         String fname = entity.getFname();
         if (fname != null) {
-            stmt.bindString(4, fname);
+            stmt.bindString(5, fname);
         }
  
         String userpwd = entity.getUserpwd();
         if (userpwd != null) {
-            stmt.bindString(5, userpwd);
+            stmt.bindString(6, userpwd);
         }
  
         String email = entity.getEmail();
         if (email != null) {
-            stmt.bindString(6, email);
+            stmt.bindString(7, email);
         }
+        stmt.bindLong(8, entity.getSessionid());
     }
 
     @Override
@@ -134,10 +150,12 @@ public class UserDao extends AbstractDao<User, Long> {
         User entity = new User( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getInt(offset + 1), // userid
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // username
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // fname
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // userpwd
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // email
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // acount
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // username
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // fname
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // userpwd
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // email
+            cursor.getInt(offset + 7) // sessionid
         );
         return entity;
     }
@@ -146,10 +164,12 @@ public class UserDao extends AbstractDao<User, Long> {
     public void readEntity(Cursor cursor, User entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setUserid(cursor.getInt(offset + 1));
-        entity.setUsername(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setFname(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setUserpwd(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setEmail(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setAcount(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setUsername(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setFname(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setUserpwd(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setEmail(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setSessionid(cursor.getInt(offset + 7));
      }
     
     @Override

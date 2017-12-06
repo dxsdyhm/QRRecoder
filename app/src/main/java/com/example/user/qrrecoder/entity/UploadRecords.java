@@ -17,13 +17,15 @@ import java.util.List;
 
 public class UploadRecords {
     private String userId;
+    private int sessionid;
     private List<DeviceItem> deviceItems;
 
     public UploadRecords() {
     }
 
-    public UploadRecords(String userId, List<DeviceItem> deviceItems) {
+    public UploadRecords(String userId, int sessionid, List<DeviceItem> deviceItems) {
         this.userId = userId;
+        this.sessionid = sessionid;
         this.deviceItems = deviceItems;
     }
 
@@ -33,6 +35,14 @@ public class UploadRecords {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public int getSessionid() {
+        return sessionid;
+    }
+
+    public void setSessionid(int sessionid) {
+        this.sessionid = sessionid;
     }
 
     public List<DeviceItem> getDeviceItems() {

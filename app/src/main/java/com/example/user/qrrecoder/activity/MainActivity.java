@@ -1,20 +1,28 @@
 package com.example.user.qrrecoder.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.user.qrrecoder.R;
+import com.example.user.qrrecoder.app.SPKey;
 import com.example.user.qrrecoder.base.BaseActivity;
 import com.example.user.qrrecoder.data.greendao.User;
 import com.example.user.qrrecoder.eventbus.eventbusaction.UserAction;
+import com.example.user.qrrecoder.http.Enty.HttpResults;
 import com.example.user.qrrecoder.http.Enty.LoginResult;
 import com.example.user.qrrecoder.http.retrofit.HttpSend;
+import com.example.user.qrrecoder.utils.SharedPrefreUtils;
 import com.example.user.qrrecoder.utils.SizeUtils;
+import com.example.user.qrrecoder.utils.ToastUtils;
 import com.hdl.elog.ELog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -36,12 +44,17 @@ public class MainActivity extends BaseActivity {
     Button btnScan;
     @BindView(R.id.tx_scanresult)
     TextView txScanresult;
+    @BindView(R.id.rl_logout)
+    RelativeLayout rlLogout;
+
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
+        mContext=this;
     }
 
     @Override
@@ -63,21 +76,64 @@ public class MainActivity extends BaseActivity {
         sb.append("\n");
         sb.append("姓名：" + user.getUsername());
         sb.append("\n");
-        sb.append("邮箱：" + user.getEmail());
+        sb.append("联系：" + user.getAcount());
         sb.append("\n");
         sb.append("公司：" + user.getFname());
         sb.append("\n");
         txUserinfo.setText(sb.toString());
     }
 
-    @OnClick({R.id.btn_scan, R.id.tx_scanresult})
+    @OnClick({R.id.btn_scan, R.id.tx_scanresult,R.id.rl_logout})
     public void onViewClicked(View view) {
-        if(view.getId()==R.id.btn_scan){
+        if (view.getId() == R.id.btn_scan) {
             RequirePermission();
-        }else if(view.getId()==R.id.tx_scanresult){
+        } else if (view.getId() == R.id.tx_scanresult) {
             //去扫码列表页
             toScanRecord();
+        }else if(view.getId() == R.id.rl_logout){
+            LogOut();
         }
+    }
+
+    private void LogOut(){
+        new MaterialDialog.Builder(this)
+                .title(R.string.logout)
+                .content(R.string.logout_tips)
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        SharedPrefreUtils.getInstance().putBooleanData(mContext,SPKey.SP_ISLOGIN,false);
+                        logoutFromServer();
+                    }
+                })
+                .show();
+    }
+
+    //不管结果如何都跳转到登陆页(欠考虑)
+    private void logoutFromServer(){
+        HttpSend.getInstence().logout(new Observer<HttpResults>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(HttpResults httpResults) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                toLogin();
+            }
+
+            @Override
+            public void onComplete() {
+                toLogin();
+            }
+        });
     }
 
     @Override
@@ -101,8 +157,14 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
-    private void toScanRecord(){
-        Intent list=new Intent(this,ScanResultActivity.class);
+    private void toScanRecord() {
+        Intent list = new Intent(this, ScanResultActivity.class);
         startActivity(list);
+    }
+
+    private void toLogin(){
+        Intent login = new Intent(this, LoginActivity.class);
+        login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(login);
     }
 }

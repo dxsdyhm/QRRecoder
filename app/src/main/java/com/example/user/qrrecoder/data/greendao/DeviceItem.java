@@ -25,123 +25,32 @@ public class DeviceItem{
     @Expose
     @Index(unique = true)
     @NotNull
-    private int fdeviceid;
+    private int deviceid;
     @Expose
     @Index
-    private int fid;
+    private int userid;
     @Expose
     @NotNull
-    private String fdeviceuuid;
+    private String deviceuuid;
     @Expose
-    private long fscantime;
+    private long scantime;
     @Expose(serialize = false)
     private int serverState;//上传的状态
     @Expose
     private String faccount;
-    @Expose
-    private String fcreate;
-    @Expose
-    private long ftime;
-    @Expose
-    private String fstatus;
-    @Expose
-    private String fdes;//描述
-    @Generated(hash = 306625901)
-    public DeviceItem(Long id, int fdeviceid, int fid, @NotNull String fdeviceuuid,
-            long fscantime, int serverState, String faccount, String fcreate,
-            long ftime, String fstatus, String fdes) {
+    @Generated(hash = 1144007671)
+    public DeviceItem(Long id, int deviceid, int userid, @NotNull String deviceuuid,
+            long scantime, int serverState, String faccount) {
         this.id = id;
-        this.fdeviceid = fdeviceid;
-        this.fid = fid;
-        this.fdeviceuuid = fdeviceuuid;
-        this.fscantime = fscantime;
+        this.deviceid = deviceid;
+        this.userid = userid;
+        this.deviceuuid = deviceuuid;
+        this.scantime = scantime;
         this.serverState = serverState;
         this.faccount = faccount;
-        this.fcreate = fcreate;
-        this.ftime = ftime;
-        this.fstatus = fstatus;
-        this.fdes = fdes;
     }
     @Generated(hash = 1139167867)
     public DeviceItem() {
-    }
-    public int getFdeviceid() {
-        return this.fdeviceid;
-    }
-    public void setFdeviceid(int fdeviceid) {
-        this.fdeviceid = fdeviceid;
-    }
-    public int getFid() {
-        return this.fid;
-    }
-    public void setFid(int fid) {
-        this.fid = fid;
-    }
-    public String getFdeviceuuid() {
-        return this.fdeviceuuid;
-    }
-    public void setFdeviceuuid(String fdeviceuuid) {
-        this.fdeviceuuid = fdeviceuuid;
-    }
-    public long getFscantime() {
-        return this.fscantime;
-    }
-    public void setFscantime(long fscantime) {
-        this.fscantime = fscantime;
-    }
-
-    public String getFaccount() {
-        return this.faccount;
-    }
-    public void setFaccount(String faccount) {
-        this.faccount = faccount;
-    }
-    public String getFcreate() {
-        return this.fcreate;
-    }
-    public void setFcreate(String fcreate) {
-        this.fcreate = fcreate;
-    }
-    public long getFtime() {
-        return this.ftime;
-    }
-    public void setFtime(long ftime) {
-        this.ftime = ftime;
-    }
-    public String getFstatus() {
-        return this.fstatus;
-    }
-    public void setFstatus(String fstatus) {
-        this.fstatus = fstatus;
-    }
-    public String getFdes() {
-        return this.fdes;
-    }
-    public void setFdes(String fdes) {
-        this.fdes = fdes;
-    }
-
-    @Override
-    public String toString() {
-        return "DeviceItem{" +
-                "fdeviceid=" + fdeviceid +
-                ", fid=" + fid +
-                ", fdeviceuuid='" + fdeviceuuid + '\'' +
-                ", fscantime=" + fscantime +
-                ", serverState=" + serverState +
-                ", faccount='" + faccount + '\'' +
-                ", fcreate='" + fcreate + '\'' +
-                ", ftime=" + ftime +
-                ", fstatus='" + fstatus + '\'' +
-                ", fdes='" + fdes + '\'' +
-                '}';
-    }
-
-    public int getServerState() {
-        return this.serverState;
-    }
-    public void setServerState(int serverState) {
-        this.serverState = serverState;
     }
     public Long getId() {
         return this.id;
@@ -149,4 +58,41 @@ public class DeviceItem{
     public void setId(Long id) {
         this.id = id;
     }
+    public int getDeviceid() {
+        return this.deviceid;
+    }
+    public void setDeviceid(int deviceid) {
+        this.deviceid = deviceid;
+    }
+    public int getUserid() {
+        return this.userid;
+    }
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+    public String getDeviceuuid() {
+        return this.deviceuuid;
+    }
+    public void setDeviceuuid(String deviceuuid) {
+        this.deviceuuid = deviceuuid;
+    }
+    public long getScantime() {
+        return this.scantime;
+    }
+    public void setScantime(long scantime) {
+        this.scantime = scantime;
+    }
+    public int getServerState() {
+        return this.serverState;
+    }
+    public void setServerState(int serverState) {
+        this.serverState = serverState;
+    }
+    public String getFaccount() {
+        return this.faccount;
+    }
+    public void setFaccount(String faccount) {
+        this.faccount = faccount;
+    }
+
 }

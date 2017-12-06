@@ -34,7 +34,7 @@ public class DeviceItemViewBinder extends ItemViewBinder<DeviceItem, DeviceItemV
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull DeviceItem item) {
         holder.textNumber.setText(String.valueOf(holder.getAdapterPosition()+1));
-        holder.textDeviceID.setText(String.valueOf(item.getFdeviceid()));
+        holder.textDeviceID.setText(String.valueOf(item.getDeviceid()));
         holder.textServerState.setText(getServerStateString(item));
         holder.textRecoderTime.setText(getRecordTimeString(item));
     }
@@ -63,7 +63,7 @@ public class DeviceItemViewBinder extends ItemViewBinder<DeviceItem, DeviceItemV
     }
 
     private String getRecordTimeString(DeviceItem item){
-        Date date=new Date(item.getFscantime());
+        Date date=new Date(item.getScantime());
         DateFormat format=new SimpleDateFormat(DATE_FORMAT);
         return format.format(date);
     }

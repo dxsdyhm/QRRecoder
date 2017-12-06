@@ -6,4 +6,5 @@ package com.example.user.qrrecoder.app;
 
 public class SPKey {
     public static final String SP_ACTIVEUSER="SP_ACTIVEUSER";
+    public static final String SP_ISLOGIN="SP_ISLOGIN";
 }

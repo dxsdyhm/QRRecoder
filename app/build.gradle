@@ -25,7 +25,7 @@ android {
 }
 
 greendao {
-    schemaVersion 14
+    schemaVersion 15
     daoPackage 'com.example.user.qrrecoder.data.greendaoauto'
     targetGenDir 'src/main/java'
 }

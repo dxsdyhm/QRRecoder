@@ -28,8 +28,9 @@ public interface ApiService {
 
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("scanrecord")
-    Observable<HttpResults> uploadRecord(@Query("account") String start, @Body RequestBody route);
+    Observable<HttpResults> uploadRecord(@Query("account") String account,@Query("sessionid") int sessionid,@Body RequestBody route);
 
-    @POST("scanrecord")
-    Observable<HttpResults> uploadRecord(@Query("account") String start,@Query("data") String data);
+    @GET("logout")
+    Observable<HttpResults> logout();
+
 }

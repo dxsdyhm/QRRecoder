@@ -33,4 +33,18 @@ public class SharedPrefreUtils {
                 Context.MODE_PRIVATE);
         return sf.getString(key,"");
     }
+
+    public void putBooleanData(Context mContext, String key, boolean value){
+        SharedPreferences sf = mContext.getSharedPreferences(SP_FILE_GWELL,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sf.edit();
+        editor.putBoolean(key,value);
+        editor.apply();
+    }
+
+    public boolean getBooleanData(Context mContext, String key){
+        SharedPreferences sf = mContext.getSharedPreferences(SP_FILE_GWELL,
+                Context.MODE_PRIVATE);
+        return sf.getBoolean(key,false);
+    }
 }

@@ -1,25 +1,33 @@
 package com.example.user.qrrecoder.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.user.qrrecoder.R;
 import com.example.user.qrrecoder.adapter.DeviceItemViewBinder;
 import com.example.user.qrrecoder.adapter.EmptyViewBinder;
+import com.example.user.qrrecoder.app.MyApp;
+import com.example.user.qrrecoder.app.SPKey;
 import com.example.user.qrrecoder.base.BaseActivity;
 import com.example.user.qrrecoder.bean.EmptyView;
 import com.example.user.qrrecoder.data.greendao.DeviceItem;
+import com.example.user.qrrecoder.data.greendao.User;
 import com.example.user.qrrecoder.data.greendaoauto.DeviceItemDao;
+import com.example.user.qrrecoder.data.greendaoauto.UserDao;
 import com.example.user.qrrecoder.data.greendaoutil.DBUtils;
 import com.example.user.qrrecoder.entity.UploadRecords;
 import com.example.user.qrrecoder.http.Enty.HttpResults;
 import com.example.user.qrrecoder.http.retrofit.HttpSend;
+import com.example.user.qrrecoder.utils.SharedPrefreUtils;
 import com.example.user.qrrecoder.utils.ToastUtils;
 import com.hdl.elog.ELog;
 
@@ -49,6 +57,8 @@ public class ScanResultActivity extends BaseActivity {
     private Items items;
     private List<DeviceItem> deviceItems;
     private Context mContext;
+
+    private User user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,7 +96,14 @@ public class ScanResultActivity extends BaseActivity {
         adapter.setItems(items);
         adapter.notifyItemRangeChanged(0, items.size() - 1);
         checkItemEmpty();
+
+        user= MyApp.getActiveUser();
+        if(user==null){
+            toLogin();
+        }
     }
+
+
 
     //检查数据源并可能显示空视图
     private void checkItemEmpty() {
@@ -105,7 +122,7 @@ public class ScanResultActivity extends BaseActivity {
     private List<DeviceItem> getUnUploadRecord() {
         QueryBuilder<DeviceItem> builder = DBUtils.getDeviceItemService().queryBuilder();
         builder.where(DeviceItemDao.Properties.ServerState.eq(0));
-        builder.orderDesc(DeviceItemDao.Properties.Fscantime);
+        builder.orderDesc(DeviceItemDao.Properties.Scantime);
         return builder.list();
     }
 
@@ -129,6 +146,32 @@ public class ScanResultActivity extends BaseActivity {
                 .progress(true, 0);
     }
 
+    private void showSuccessDialog(String successCounts){
+        final String toast = String.format(mContext.getString(R.string.upload_success_tip), successCounts);
+        new MaterialDialog.Builder(this)
+                .title(R.string.upload_success)
+                .content(toast)
+                .positiveText(R.string.back)
+                .negativeText(R.string.scan)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        //回主页
+                        Intent toMain=new Intent();
+                        toMain.setClass(ScanResultActivity.this,MainActivity.class);
+                        toMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(toMain);
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        finish();
+                    }
+                })
+                .show();
+    }
+
     @OnClick(R.id.fab_upload)
     public void onViewClicked() {
         if (deviceItems == null || deviceItems.size() <= 0) {
@@ -148,8 +191,8 @@ public class ScanResultActivity extends BaseActivity {
                 UploadRecord();
                 checkItemEmpty();
                 setResult(RESULT_OK);
-                String toast = String.format(mContext.getString(R.string.upload_success), stringHttpResults);
-                ToastUtils.ShowSuccess(mContext, toast);
+                showSuccessDialog(stringHttpResults);
+                ToastUtils.ShowSuccess(mContext, getString(R.string.upload_success));
             }
 
 
@@ -165,7 +208,14 @@ public class ScanResultActivity extends BaseActivity {
             }
         };
 
-        UploadRecords records = new UploadRecords("1", deviceItems);
+        UploadRecords records = new UploadRecords(user.getAcount(),user.getSessionid(), deviceItems);
         HttpSend.getInstence().uploadRecord(records, observer);
+    }
+
+    private void toLogin(){
+        ToastUtils.ShowError(this,getString(R.string.user_info_error),1500,true);
+        Intent login = new Intent(this, LoginActivity.class);
+        login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(login);
     }
 }

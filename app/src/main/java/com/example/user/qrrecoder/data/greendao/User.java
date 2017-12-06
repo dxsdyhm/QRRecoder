@@ -19,52 +19,26 @@ public class User {
     @Id private Long id;
     @Index(unique = true)
     private int userid;
+    private String acount;
     private String username;
     private String fname;
     private String userpwd;
     private String email;
-    @Generated(hash = 739195874)
-    public User(Long id, int userid, String username, String fname, String userpwd,
-            String email) {
+    private int sessionid;
+    @Generated(hash = 1071991224)
+    public User(Long id, int userid, String acount, String username, String fname,
+            String userpwd, String email, int sessionid) {
         this.id = id;
         this.userid = userid;
+        this.acount = acount;
         this.username = username;
         this.fname = fname;
         this.userpwd = userpwd;
         this.email = email;
+        this.sessionid = sessionid;
     }
     @Generated(hash = 586692638)
     public User() {
-    }
-    public int getUserid() {
-        return this.userid;
-    }
-    public void setUserid(int userid) {
-        this.userid = userid;
-    }
-    public String getUsername() {
-        return this.username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public String getUserpwd() {
-        return this.userpwd;
-    }
-    public void setUserpwd(String userpwd) {
-        this.userpwd = userpwd;
-    }
-    public String getFname() {
-        return this.fname;
-    }
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-    public String getEmail() {
-        return this.email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
     }
     public Long getId() {
         return this.id;
@@ -72,5 +46,47 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
-  
+    public int getUserid() {
+        return this.userid;
+    }
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+    public String getAcount() {
+        return this.acount;
+    }
+    public void setAcount(String acount) {
+        this.acount = acount;
+    }
+    public String getUsername() {
+        return this.username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getFname() {
+        return this.fname;
+    }
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+    public String getUserpwd() {
+        return this.userpwd;
+    }
+    public void setUserpwd(String userpwd) {
+        this.userpwd = userpwd;
+    }
+    public String getEmail() {
+        return this.email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public int getSessionid() {
+        return this.sessionid;
+    }
+    public void setSessionid(int sessionid) {
+        this.sessionid = sessionid;
+    }
+   
 }

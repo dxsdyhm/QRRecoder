@@ -93,8 +93,10 @@ public class HttpSend {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);//这里可以选择拦截级别
         //设置 Debug Log 模式
         // init cookie manager
-        ClearableCookieJar cookieJar =
-                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(MyApp.app));
+        if(cookieJar==null){
+            cookieJar =
+                    new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(MyApp.app));
+        }
         builder.addInterceptor(loggingInterceptor)
                 .cookieJar(cookieJar);
         Retrofit retrofit = new Retrofit.Builder()
@@ -107,7 +109,35 @@ public class HttpSend {
         RequestBody body=
                 RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), records.getJsonString());
         ApiService uploadRecord = retrofit.create(ApiService.class);
-        uploadRecord.uploadRecord(records.getUserId(), body)
+        uploadRecord.uploadRecord(records.getUserId(),records.getSessionid(), body)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    public void logout(Observer<HttpResults> observer){
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        // Log信息拦截器
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);//这里可以选择拦截级别
+        //设置 Debug Log 模式
+        // init cookie manager
+        if(cookieJar==null){
+            cookieJar =
+                    new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(MyApp.app));
+        }
+        builder.addInterceptor(loggingInterceptor)
+                .cookieJar(cookieJar);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASEURL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(builder.build())
+                .build();
+
+        ApiService uploadRecord = retrofit.create(ApiService.class);
+        uploadRecord.logout()
                 .map(new HttpResultFunc())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
