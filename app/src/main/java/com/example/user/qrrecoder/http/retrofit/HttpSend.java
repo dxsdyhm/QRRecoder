@@ -1,37 +1,18 @@
 package com.example.user.qrrecoder.http.retrofit;
 
-import android.content.Intent;
-import android.util.Log;
-
-import com.example.user.qrrecoder.activity.LoginActivity;
-import com.example.user.qrrecoder.activity.MainActivity;
 import com.example.user.qrrecoder.app.MyApp;
-import com.example.user.qrrecoder.data.greendao.DeviceItem;
-import com.example.user.qrrecoder.data.greendao.User;
 import com.example.user.qrrecoder.entity.UploadRecords;
-import com.example.user.qrrecoder.eventbus.eventbusaction.UserAction;
-import com.example.user.qrrecoder.http.Enty.HttpResult;
 import com.example.user.qrrecoder.http.Enty.HttpResults;
 import com.example.user.qrrecoder.http.Enty.LoginResult;
-import com.example.user.qrrecoder.http.Enty.Subject;
 import com.example.user.qrrecoder.http.api.ApiService;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.util.List;
-
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -41,6 +22,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by dxs on 2017/11/17.
+ * web 请求集合
+ * 暂时未作封装，直接使用Retrofit的API，很多重复代码需要封装配置
  */
 
 public class HttpSend {

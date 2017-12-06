@@ -10,7 +10,7 @@ public class LoginResult extends HttpResults {
     private String fusername; //用户名
     private String fname;  //客户名称
     private String fmail;  //首次登陆用来发激活链接
-    private int sessionid;
+    private int sessionid;//会话ID
 
     public int getFcustomerid() {
         return fcustomerid;

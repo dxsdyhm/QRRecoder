@@ -2,7 +2,6 @@ package com.example.user.qrrecoder.http.retrofit;
 
 import android.util.Log;
 
-import com.example.user.qrrecoder.http.Enty.HttpResult;
 import com.example.user.qrrecoder.http.Enty.HttpResults;
 
 import io.reactivex.functions.Function;

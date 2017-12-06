@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Created by dxs on 2017/12/1.
+ * 上传记录模型
  */
 
 public class UploadRecords {

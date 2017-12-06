@@ -8,6 +8,7 @@ import android.os.Build;
 
 /**
  * Created by dxs on 2017/12/4.
+ * 播放简短音乐工具（未做成单例）
  */
 
 public class MusicUtils {

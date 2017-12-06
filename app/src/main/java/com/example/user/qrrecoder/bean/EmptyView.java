@@ -2,6 +2,7 @@ package com.example.user.qrrecoder.bean;
 
 /**
  * Created by dxs on 2017/12/4.
+ * RecycleView的空视图模型
  */
 
 public class EmptyView {

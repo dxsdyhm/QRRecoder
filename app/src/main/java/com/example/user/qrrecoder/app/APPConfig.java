@@ -2,6 +2,7 @@ package com.example.user.qrrecoder.app;
 
 /**
  * Created by dxs on 2017/12/5.
+ * 作为整个APP的全局配置文件
  */
 
 public class APPConfig {

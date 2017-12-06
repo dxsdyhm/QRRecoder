@@ -7,6 +7,7 @@ import com.example.user.qrrecoder.app.MyApp;
 
 /**
  * Created by dxs on 2017/12/6.
+ * 与APP属性相关的工具入口
  */
 
 public class AppUtils {
