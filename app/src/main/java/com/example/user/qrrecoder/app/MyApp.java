@@ -26,9 +26,9 @@ public class MyApp extends Application {
         GreenDaoUtils.init(this);
     }
 
+    //TODO 每次都查询数据库不太友好，可考虑在内存缓存，内存中没有的时候再去数据库查找
     public static User getActiveUser(){
         String account= SharedPrefreUtils.getInstance().getStringData(app,SPKey.SP_ACTIVEUSER);
-        Log.e("dxsTest","username:"+account);
         if(TextUtils.isEmpty(account)){
             return null;
         }

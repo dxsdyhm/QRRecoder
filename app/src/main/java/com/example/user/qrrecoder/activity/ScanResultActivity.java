@@ -65,6 +65,10 @@ public class ScanResultActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         mContext = this;
+        user= MyApp.getActiveUser();
+        if(user==null){
+            toLogin();
+        }
         initData();
     }
 
@@ -97,10 +101,7 @@ public class ScanResultActivity extends BaseActivity {
         adapter.notifyItemRangeChanged(0, items.size() - 1);
         checkItemEmpty();
 
-        user= MyApp.getActiveUser();
-        if(user==null){
-            toLogin();
-        }
+
     }
 
 
@@ -121,6 +122,7 @@ public class ScanResultActivity extends BaseActivity {
     //获取未上传的扫码记录
     private List<DeviceItem> getUnUploadRecord() {
         QueryBuilder<DeviceItem> builder = DBUtils.getDeviceItemService().queryBuilder();
+        builder.where(DeviceItemDao.Properties.Faccount.eq(user.getAcount()));
         builder.where(DeviceItemDao.Properties.ServerState.eq(0));
         builder.orderDesc(DeviceItemDao.Properties.Scantime);
         return builder.list();
@@ -212,12 +214,7 @@ public class ScanResultActivity extends BaseActivity {
         HttpSend.getInstence().uploadRecord(records, observer);
     }
 
-    private void toLogin(){
-        ToastUtils.ShowError(this,getString(R.string.user_info_error),1500,true);
-        Intent login = new Intent(this, LoginActivity.class);
-        login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(login);
-    }
+
 
     private void toScanActivity(){
         Intent login = new Intent(this, ZbarActivity.class);

@@ -9,13 +9,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.user.qrrecoder.R;
+import com.example.user.qrrecoder.app.MyApp;
 import com.example.user.qrrecoder.base.BaseFullScreenActivity;
 import com.example.user.qrrecoder.data.greendao.DeviceItem;
+import com.example.user.qrrecoder.data.greendao.User;
+import com.example.user.qrrecoder.data.greendaoauto.DeviceItemDao;
 import com.example.user.qrrecoder.data.greendaoutil.DBUtils;
 import com.example.user.qrrecoder.utils.DeviceUtils;
 import com.example.user.qrrecoder.utils.MusicUtils;
 import com.example.user.qrrecoder.utils.ToastUtils;
 import com.hdl.elog.ELog;
+
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +40,7 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
     Button btnStop;
     @BindView(R.id.tx_scan_number)
     TextView txScanNumber;
+    private User user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +48,10 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
         setContentView(R.layout.activity_zbar);
         ButterKnife.bind(this);
         initZbar();
+        user = MyApp.getActiveUser();
+        if (user==null) {
+            toLogin();
+        }
     }
 
     private void initZbar() {
@@ -66,7 +76,7 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
                 DeviceItem item = CreateDeviceItem(deviceInfo);
                 DBUtils.getDeviceItemService().saveOrUpdate(item);
                 ToastUtils.ShowScanSuccess(this, getToastContent(item));
-                changeCount(DBUtils.getDeviceItemService().count());
+                changeCount(getUnUploadRecord());
                 ding();
                 vibrate();
             } else {
@@ -94,6 +104,13 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
         musictils.playPoolMusic();
     }
 
+    private int getUnUploadRecord() {
+        QueryBuilder<DeviceItem> queryBuilder = DBUtils.getDeviceItemService().queryBuilder();
+        queryBuilder.where(DeviceItemDao.Properties.Faccount.eq(user.getAcount()));
+        queryBuilder.where(DeviceItemDao.Properties.ServerState.eq(0));
+        return queryBuilder.list().size();
+    }
+
     @Override
     public void onScanQRCodeOpenCameraError() {
         ELog.dxs("打开相机出错");
@@ -115,8 +132,8 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
         item.setDeviceuuid(info[0]);
         item.setDeviceid(Integer.parseInt(info[1]));
         item.setScantime(time);
-        item.setUserid(1);
-        item.setFaccount("dxs");
+        item.setUserid(user.getUserid());
+        item.setFaccount(user.getAcount());
         return item;
     }
 
@@ -154,7 +171,7 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
     public void onViewClicked(View view) {
         Intent list = new Intent(this, ScanResultActivity.class);
         startActivityForResult(list, 1);
-        if(view.getId()==R.id.btn_stop){
+        if (view.getId() == R.id.btn_stop) {
             finish();
         }
     }

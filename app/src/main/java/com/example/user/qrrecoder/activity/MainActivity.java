@@ -161,11 +161,4 @@ public class MainActivity extends BaseActivity {
         Intent list = new Intent(this, ScanResultActivity.class);
         startActivity(list);
     }
-
-    private void toLogin(){
-        Intent login = new Intent(this, LoginActivity.class);
-        login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(login);
-        finish();
-    }
 }
