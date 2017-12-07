@@ -57,14 +57,15 @@
 
     <Button
         android:id="@+id/btn_scan"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:layout_below="@+id/card_info"
         android:layout_centerInParent="true"
         android:background="@drawable/selecter_scan"
         android:text="@string/start_scan"
         android:textColor="@color/color_ffffff"
         android:textSize="18sp"
+        android:transitionName="@string/share_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatImageView;
+import android.transition.Fade;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,11 +21,9 @@ import com.example.user.qrrecoder.base.BaseActivity;
 import com.example.user.qrrecoder.data.greendao.User;
 import com.example.user.qrrecoder.eventbus.eventbusaction.UserAction;
 import com.example.user.qrrecoder.http.Enty.HttpResults;
-import com.example.user.qrrecoder.http.Enty.LoginResult;
 import com.example.user.qrrecoder.http.retrofit.HttpSend;
 import com.example.user.qrrecoder.utils.SharedPrefreUtils;
 import com.example.user.qrrecoder.utils.SizeUtils;
-import com.example.user.qrrecoder.utils.ToastUtils;
 import com.hdl.elog.ELog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -40,12 +41,12 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.tx_userinfo)
     TextView txUserinfo;
-    @BindView(R.id.btn_scan)
-    Button btnScan;
     @BindView(R.id.tx_scanresult)
     TextView txScanresult;
     @BindView(R.id.rl_logout)
     RelativeLayout rlLogout;
+    @BindView(R.id.btn_scan)
+    Button btnScan;
 
     private Context mContext;
 
@@ -54,7 +55,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        mContext=this;
+        mContext = this;
+        getWindow().setReturnTransition(new Fade().setDuration(300));
     }
 
     @Override
@@ -83,19 +85,19 @@ public class MainActivity extends BaseActivity {
         txUserinfo.setText(sb.toString());
     }
 
-    @OnClick({R.id.btn_scan, R.id.tx_scanresult,R.id.rl_logout})
+    @OnClick({R.id.btn_scan, R.id.tx_scanresult, R.id.rl_logout})
     public void onViewClicked(View view) {
         if (view.getId() == R.id.btn_scan) {
             RequirePermission();
         } else if (view.getId() == R.id.tx_scanresult) {
             //去扫码列表页
             toScanRecord();
-        }else if(view.getId() == R.id.rl_logout){
+        } else if (view.getId() == R.id.rl_logout) {
             LogOut();
         }
     }
 
-    private void LogOut(){
+    private void LogOut() {
         new MaterialDialog.Builder(this)
                 .title(R.string.logout)
                 .content(R.string.logout_tips)
@@ -104,7 +106,7 @@ public class MainActivity extends BaseActivity {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        SharedPrefreUtils.getInstance().putBooleanData(mContext,SPKey.SP_ISLOGIN,false);
+                        SharedPrefreUtils.getInstance().putBooleanData(mContext, SPKey.SP_ISLOGIN, false);
                         logoutFromServer();
                     }
                 })
@@ -112,7 +114,7 @@ public class MainActivity extends BaseActivity {
     }
 
     //不管结果如何都跳转到登陆页(欠考虑)
-    private void logoutFromServer(){
+    private void logoutFromServer() {
         HttpSend.getInstence().logout(new Observer<HttpResults>() {
             @Override
             public void onSubscribe(Disposable d) {

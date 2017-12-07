@@ -1,5 +1,6 @@
 package com.example.user.qrrecoder.activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -84,7 +85,8 @@ public class LogoActivity extends BaseActivity {
             return;
         }
         Intent main = new Intent(this, MainActivity.class);
-        startActivity(main);
+//        startActivity(main);
+        startActivity(main, ActivityOptions.makeSceneTransitionAnimation(this,ivLogo,getString(R.string.share_logo)).toBundle());
         EventBus.getDefault().postSticky(new UserAction(user));
     }
 }
