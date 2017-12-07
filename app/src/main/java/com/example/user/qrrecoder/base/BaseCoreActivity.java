@@ -16,7 +16,6 @@ public abstract class BaseCoreActivity extends AppCompatActivity {
     public abstract boolean destroyBar();
 
     public void toLogin(){
-        ToastUtils.ShowError(this,getString(R.string.user_info_error),1500,true);
         Intent login = new Intent(this, LoginActivity.class);
         login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(login);

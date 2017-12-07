@@ -29,4 +29,6 @@
     <string name="user_info_error">用户信息异常，请重新登陆</string>
     <string name="user_account">输入用户名</string>
     <string name="user_pwd">输入密码</string>
+    <string name="http_er">系统异常</string>
+    <string name="http_er_10903013">没有权限</string>
 </resources>

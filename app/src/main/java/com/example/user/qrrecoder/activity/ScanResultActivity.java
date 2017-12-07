@@ -27,6 +27,7 @@ import com.example.user.qrrecoder.data.greendaoutil.DBUtils;
 import com.example.user.qrrecoder.entity.UploadRecords;
 import com.example.user.qrrecoder.http.Enty.HttpResults;
 import com.example.user.qrrecoder.http.retrofit.HttpSend;
+import com.example.user.qrrecoder.utils.HttpErroStringUtils;
 import com.example.user.qrrecoder.utils.SharedPrefreUtils;
 import com.example.user.qrrecoder.utils.ToastUtils;
 import com.hdl.elog.ELog;
@@ -67,6 +68,7 @@ public class ScanResultActivity extends BaseActivity {
         mContext = this;
         user= MyApp.getActiveUser();
         if(user==null){
+            ToastUtils.ShowError(this,getString(R.string.user_info_error),1500,true);
             toLogin();
         }
         initData();
@@ -100,8 +102,6 @@ public class ScanResultActivity extends BaseActivity {
         adapter.setItems(items);
         adapter.notifyItemRangeChanged(0, items.size() - 1);
         checkItemEmpty();
-
-
     }
 
 
@@ -197,11 +197,11 @@ public class ScanResultActivity extends BaseActivity {
                 ToastUtils.ShowSuccess(mContext, getString(R.string.upload_success));
             }
 
-
             @Override
             public void onError(Throwable e) {
                 dialog.dismiss();
-                ToastUtils.ShowError(mContext, e.toString(), 1500, false);
+                String toast= HttpErroStringUtils.getShowStringByException(e);
+                ToastUtils.ShowError(mContext, toast, 1500, false);
             }
 
             @Override
@@ -213,8 +213,6 @@ public class ScanResultActivity extends BaseActivity {
         UploadRecords records = new UploadRecords(user.getAcount(),user.getSessionid(), deviceItems);
         HttpSend.getInstence().uploadRecord(records, observer);
     }
-
-
 
     private void toScanActivity(){
         Intent login = new Intent(this, ZbarActivity.class);

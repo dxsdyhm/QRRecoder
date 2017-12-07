@@ -50,6 +50,7 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
         initZbar();
         user = MyApp.getActiveUser();
         if (user==null) {
+            ToastUtils.ShowError(this,getString(R.string.user_info_error),1500,true);
             toLogin();
         }
     }

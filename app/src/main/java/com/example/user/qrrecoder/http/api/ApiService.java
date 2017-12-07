@@ -17,11 +17,11 @@ import retrofit2.http.Query;
  */
 
 public interface ApiService {
-    @POST("login")
+    @POST("app/login")
     Observable<HttpResults<LoginResult>> login(@Query("account") String start, @Query("pwd") String pwd);
 
     @Headers({"Content-Type: application/json","Accept: application/json"})
-    @POST("scanrecord")
+    @POST("app/scanrecord")
     Observable<HttpResults> uploadRecord(@Query("account") String account,@Query("sessionid") int sessionid,@Body RequestBody route);
 
     @GET("logout")

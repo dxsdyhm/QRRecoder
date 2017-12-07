@@ -20,8 +20,10 @@ import com.example.user.qrrecoder.data.greendaoutil.DBUtils;
 import com.example.user.qrrecoder.eventbus.eventbusaction.UserAction;
 import com.example.user.qrrecoder.http.Enty.LoginResult;
 import com.example.user.qrrecoder.http.retrofit.HttpSend;
+import com.example.user.qrrecoder.utils.HttpErroStringUtils;
 import com.example.user.qrrecoder.utils.SharedPrefreUtils;
 import com.example.user.qrrecoder.utils.ToastUtils;
+import com.hdl.elog.ELog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.query.QueryBuilder;
@@ -137,7 +139,8 @@ public class LoginActivity extends BaseFullScreenActivity {
             @Override
             public void onError(Throwable e) {
                 dialog.dismiss();
-                ToastUtils.ShowError(mContext, e.toString(), APPConfig.Release.DEFAULT_TOAST_ERROR_TIME, true);
+                String toast= HttpErroStringUtils.getShowStringByException(e);
+                ToastUtils.ShowError(mContext, toast, APPConfig.Release.DEFAULT_TOAST_ERROR_TIME, true);
             }
 
             @Override
