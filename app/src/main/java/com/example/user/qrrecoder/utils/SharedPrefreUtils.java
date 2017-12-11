@@ -47,4 +47,18 @@ public class SharedPrefreUtils {
                 Context.MODE_PRIVATE);
         return sf.getBoolean(key,false);
     }
+
+    public void putLongData(Context mContext, String key, long value){
+        SharedPreferences sf = mContext.getSharedPreferences(SP_FILE_GWELL,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sf.edit();
+        editor.putLong(key,value);
+        editor.apply();
+    }
+
+    public long getLongData(Context mContext, String key){
+        SharedPreferences sf = mContext.getSharedPreferences(SP_FILE_GWELL,
+                Context.MODE_PRIVATE);
+        return sf.getLong(key,0);
+    }
 }

@@ -14,4 +14,6 @@ public class SPKey {
      * 是否登陆
      */
     public static final String SP_ISLOGIN="SP_ISLOGIN";
+
+    public static final String SP_HOTFIX_TIME_SPLITE="SP_HOTFIX_TIME_SPLITE";
 }

@@ -129,11 +129,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onError(Throwable e) {
                 toLogin();
+                finish();
             }
 
             @Override
             public void onComplete() {
                 toLogin();
+                finish();
             }
         });
     }

@@ -27,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class HttpSend {
-    private final static String BASEURL="http://192.168.1.80:8080/psp/ja/v1/";
+    private final static String BASEURL="http://192.168.1.73:8080/psp/ja/v1/";
     private static class HtpSendHolder{
         public static final HttpSend INSTENCE=new HttpSend();
     }
@@ -43,7 +43,7 @@ public class HttpSend {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         // Log信息拦截器
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);//这里可以选择拦截级别
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);//这里可以选择拦截级别
         //设置 Debug Log 模式
         // init cookie manager
         if(cookieJar==null){
@@ -73,7 +73,7 @@ public class HttpSend {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         // Log信息拦截器
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);//这里可以选择拦截级别
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);//这里可以选择拦截级别
         //设置 Debug Log 模式
         // init cookie manager
         if(cookieJar==null){
@@ -90,7 +90,7 @@ public class HttpSend {
                 .build();
         //"application/json; charset=utf-8"
         RequestBody body=
-                RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), records.getJsonString());
+                RequestBody.create(okhttp3.MediaType.parse("application/json"), records.getJsonString());
         ApiService uploadRecord = retrofit.create(ApiService.class);
         uploadRecord.uploadRecord(records.getUserId(),records.getSessionid(), body)
                 .map(new HttpResultFunc())
@@ -103,7 +103,7 @@ public class HttpSend {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         // Log信息拦截器
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);//这里可以选择拦截级别
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);//这里可以选择拦截级别
         //设置 Debug Log 模式
         // init cookie manager
         if(cookieJar==null){
