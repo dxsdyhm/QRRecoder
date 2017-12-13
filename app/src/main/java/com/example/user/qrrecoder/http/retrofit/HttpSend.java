@@ -27,7 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class HttpSend {
-    private final static String BASEURL="http://192.168.1.73:8080/psp/ja/v1/";
+//    private final static String BASEURL="http://39.108.193.125:81/psp/ja/v1/";
+    private final static String BASEURL="http://income.vas.gwell.cc:9898/psp/ja/v1/";
     private static class HtpSendHolder{
         public static final HttpSend INSTENCE=new HttpSend();
     }
