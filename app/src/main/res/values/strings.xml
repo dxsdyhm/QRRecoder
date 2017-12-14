@@ -31,4 +31,8 @@
     <string name="user_pwd">输入密码</string>
     <string name="http_er">系统异常</string>
     <string name="http_er_10903013">没有权限</string>
+    <string name="http_er_10903007">登陆异常,账号不存在或密码错误</string>
+    <string name="http_er_10902013">该账号已被禁用</string>
+    <string name="http_er_10901022">参数错误</string>
+    <string name="http_er_10901020">参数为空</string>
 </resources>
