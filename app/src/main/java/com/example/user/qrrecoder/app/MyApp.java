@@ -8,7 +8,6 @@ import com.example.user.qrrecoder.data.greendao.User;
 import com.example.user.qrrecoder.data.greendaoauto.UserDao;
 import com.example.user.qrrecoder.data.greendaoutil.DBUtils;
 import com.example.user.qrrecoder.data.greendaoutil.GreenDaoUtils;
-import com.example.user.qrrecoder.utils.HotFixUtils;
 import com.example.user.qrrecoder.utils.SharedPrefreUtils;
 
 import org.greenrobot.greendao.query.QueryBuilder;
@@ -25,7 +24,6 @@ public class MyApp extends Application {
         super.onCreate();
         app=this;
         GreenDaoUtils.init(this);
-//        HotFixUtils.checkPatch();
     }
 
     //TODO 每次都查询数据库不太友好，可考虑在内存缓存，内存中没有的时候再去数据库查找

@@ -85,6 +85,4 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     //第三方Toast
     compile 'com.github.GrenderG:Toasty:1.2.5'
-    //尝试热修复
-    compile 'com.aliyun.ams:alicloud-android-hotfix:3.1.8'
 }
