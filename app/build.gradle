@@ -1,17 +1,23 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
+ext {
+    surpportlib='27.0.2'
+    versionname='1.0.9'
+}
+
 android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.jwkj.qrrecoder"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 8
-        versionName "1.0.8"
+        versionCode 9
+        versionName versionname
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+        buildConfigField 'String', 'VERSIONNAME', "\""+versionname+"\""
     }
     buildTypes {
         release {
@@ -26,10 +32,6 @@ android {
     dataBinding {
         enabled = true
     }
-}
-
-ext {
-    surpportlib='27.0.2'
 }
 
 greendao {
@@ -85,4 +87,8 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     //第三方Toast
     compile 'com.github.GrenderG:Toasty:1.2.5'
+    //Bugly
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    //HotFix
+    compile 'com.aliyun.ams:alicloud-android-hotfix:3.1.8'
 }
