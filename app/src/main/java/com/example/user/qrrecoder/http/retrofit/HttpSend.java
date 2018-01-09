@@ -5,6 +5,7 @@ import com.example.user.qrrecoder.entity.UploadRecords;
 import com.example.user.qrrecoder.http.Enty.HttpResults;
 import com.example.user.qrrecoder.http.Enty.LoginResult;
 import com.example.user.qrrecoder.http.api.ApiService;
+import com.example.user.qrrecoder.utils.MD5;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
@@ -28,7 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HttpSend {
 //    private final static String BASEURL="http://39.108.193.125:81/psp/ja/v1/";
-    private final static String BASEURL="http://income.vas.gwell.cc:9898/psp/ja/v1/";
+    private final static String BASEURL="http://vasapi.cloudlinks.cn:8085/psp/ja/v1/";
     private static class HtpSendHolder{
         public static final HttpSend INSTENCE=new HttpSend();
     }
@@ -62,7 +63,7 @@ public class HttpSend {
                 .build();
 
         ApiService movieService = retrofit.create(ApiService.class);
-
+        userPwd=entryPwd(userPwd);
         movieService.login(userName, userPwd)
                 .map(new HttpResultFunc())
                 .subscribeOn(Schedulers.io())
@@ -126,5 +127,9 @@ public class HttpSend {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
+    }
+
+    private String entryPwd(String pwd){
+        return new MD5().getMD5ofStr(pwd).toLowerCase();
     }
 }
