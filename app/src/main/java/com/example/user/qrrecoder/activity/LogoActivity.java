@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.qrrecoder.R;
@@ -30,10 +29,11 @@ import butterknife.ButterKnife;
  */
 
 public class LogoActivity extends BaseActivity {
-    @BindView(R.id.iv_logo)
-    ImageView ivLogo;
+
     @BindView(R.id.tx_version)
     TextView txVersion;
+    @BindView(R.id.tx_name)
+    TextView txName;
 
     @Override
     protected int getConstomLayout() {
@@ -86,7 +86,7 @@ public class LogoActivity extends BaseActivity {
         }
         Intent main = new Intent(this, MainActivity.class);
 //        startActivity(main);
-        startActivity(main, ActivityOptions.makeSceneTransitionAnimation(this,ivLogo,getString(R.string.share_logo)).toBundle());
+        startActivity(main, ActivityOptions.makeSceneTransitionAnimation(this, txName, getString(R.string.share_logo)).toBundle());
         EventBus.getDefault().postSticky(new UserAction(user));
     }
 }

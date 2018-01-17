@@ -25,6 +25,8 @@ public class HttpErroStringUtils {
                 return MyApp.app.getString(R.string.http_er_10902013);
             case HttpError.ERROR_10901022:
                 return MyApp.app.getString(R.string.http_er_10901022);
+            case HttpError.ERROR_10903008:
+                return MyApp.app.getString(R.string.http_er_10903008);
             default:
                 return MyApp.app.getString(R.string.http_er)+"("+error+")";
         }

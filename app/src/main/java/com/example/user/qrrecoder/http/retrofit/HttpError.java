@@ -29,4 +29,8 @@ public class HttpError {
      * 系统错误
      */
     public static final String ERROR_10903002="10903002";
+    /**
+     * 登陆信息异常
+     */
+    public static final String ERROR_10903008="10903008";
 }

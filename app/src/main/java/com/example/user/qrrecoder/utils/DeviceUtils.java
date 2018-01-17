@@ -14,7 +14,9 @@ import java.util.regex.Pattern;
  */
 
 public class DeviceUtils {
-    private final static String DEVICEURL="http://yoosee.co/\\?D=([^(&)]*)";
+//    private final static String DEVICEURL="http://www.yoosee.co/\\?D=([^(&)]*)";
+    //直接抠设备信息，不再要求Yoosee网址
+    private final static String DEVICEURL="D=([^(&)]*)";
     private final static String DEVICEINFO_SPLITE="-";
 
     public static boolean isLegal(String result){
