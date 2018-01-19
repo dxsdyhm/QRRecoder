@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.user.qrrecoder.R;
 import com.example.user.qrrecoder.app.APPConfig;
+import com.example.user.qrrecoder.app.APPError;
 import com.example.user.qrrecoder.app.SPKey;
 import com.example.user.qrrecoder.base.BaseFullScreenActivity;
 import com.example.user.qrrecoder.data.greendao.User;
@@ -19,6 +20,7 @@ import com.example.user.qrrecoder.data.greendaoauto.UserDao;
 import com.example.user.qrrecoder.data.greendaoutil.DBUtils;
 import com.example.user.qrrecoder.eventbus.eventbusaction.UserAction;
 import com.example.user.qrrecoder.http.Enty.LoginResult;
+import com.example.user.qrrecoder.http.retrofit.ApiException;
 import com.example.user.qrrecoder.http.retrofit.HttpSend;
 import com.example.user.qrrecoder.utils.HttpErroStringUtils;
 import com.example.user.qrrecoder.utils.SharedPrefreUtils;
@@ -119,10 +121,15 @@ public class LoginActivity extends BaseFullScreenActivity {
 
             @Override
             public void onNext(LoginResult loginResult) {
+                if("0".equals(loginResult.getFenable())){
+                    //未激活
+                    throw new ApiException(APPError.ERROR_EABLE);
+                }
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 User user = new User();
-                user.setAcount(account);
+                //后台利用fmail字段返回用户账号（邮箱，唯一）
+                user.setAcount(loginResult.getFmail());
                 user.setUserpwd(pwd);
                 user.setUserid(loginResult.getFidentity());
                 user.setFname(loginResult.getFname());

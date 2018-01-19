@@ -1,6 +1,7 @@
 package com.example.user.qrrecoder.utils;
 
 import com.example.user.qrrecoder.R;
+import com.example.user.qrrecoder.app.APPError;
 import com.example.user.qrrecoder.app.MyApp;
 import com.example.user.qrrecoder.http.retrofit.HttpError;
 
@@ -27,6 +28,8 @@ public class HttpErroStringUtils {
                 return MyApp.app.getString(R.string.http_er_10901022);
             case HttpError.ERROR_10903008:
                 return MyApp.app.getString(R.string.http_er_10903008);
+            case APPError.ERROR_EABLE:
+                return MyApp.app.getString(R.string.apperror_10901001);
             default:
                 return MyApp.app.getString(R.string.http_er)+"("+error+")";
         }
