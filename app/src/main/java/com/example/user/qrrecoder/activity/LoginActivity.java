@@ -121,13 +121,6 @@ public class LoginActivity extends BaseFullScreenActivity {
 
             @Override
             public void onNext(LoginResult loginResult) {
-                if("0".equals(loginResult.getFenable())){
-                    //未激活
-                    onError(new ApiException(APPError.ERROR_EABLE));
-                    return;
-                }
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
                 User user = new User();
                 //后台利用fmail字段返回用户账号（邮箱，唯一）
                 user.setAcount(account);
@@ -138,8 +131,15 @@ public class LoginActivity extends BaseFullScreenActivity {
                 user.setEmail(loginResult.getFmail());
                 user.setSessionid(loginResult.getSessionid());
                 SharedPrefreUtils.getInstance().putStringData(mContext, SPKey.SP_ACTIVEUSER, user.getAcount());
-                SharedPrefreUtils.getInstance().putBooleanData(mContext, SPKey.SP_ISLOGIN, true);
                 DBUtils.getUserService().saveOrUpdate(user);
+                if("0".equals(loginResult.getFenable())){
+                    //未激活
+                    onError(new ApiException(APPError.ERROR_EABLE));
+                    return;
+                }
+                SharedPrefreUtils.getInstance().putBooleanData(mContext, SPKey.SP_ISLOGIN, true);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
                 EventBus.getDefault().postSticky(new UserAction(user));
                 finish();
             }
