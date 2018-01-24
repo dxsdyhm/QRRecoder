@@ -123,13 +123,14 @@ public class LoginActivity extends BaseFullScreenActivity {
             public void onNext(LoginResult loginResult) {
                 if("0".equals(loginResult.getFenable())){
                     //未激活
-                    throw new ApiException(APPError.ERROR_EABLE);
+                    onError(new ApiException(APPError.ERROR_EABLE));
+                    return;
                 }
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 User user = new User();
                 //后台利用fmail字段返回用户账号（邮箱，唯一）
-                user.setAcount(loginResult.getFmail());
+                user.setAcount(account);
                 user.setUserpwd(pwd);
                 user.setUserid(loginResult.getFidentity());
                 user.setFname(loginResult.getFname());
