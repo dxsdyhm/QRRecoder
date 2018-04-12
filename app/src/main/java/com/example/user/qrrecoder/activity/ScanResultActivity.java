@@ -122,7 +122,7 @@ public class ScanResultActivity extends BaseActivity {
     //获取未上传的扫码记录
     private List<DeviceItem> getUnUploadRecord() {
         QueryBuilder<DeviceItem> builder = DBUtils.getDeviceItemService().queryBuilder();
-        builder.where(DeviceItemDao.Properties.Faccount.eq(user.getAcount()));
+        builder.where(DeviceItemDao.Properties.Faccount.eq(user.getEmail()));
         builder.where(DeviceItemDao.Properties.ServerState.eq(0));
         builder.orderDesc(DeviceItemDao.Properties.Scantime);
         return builder.list();

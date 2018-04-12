@@ -107,7 +107,7 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
 
     private int getUnUploadRecord() {
         QueryBuilder<DeviceItem> queryBuilder = DBUtils.getDeviceItemService().queryBuilder();
-        queryBuilder.where(DeviceItemDao.Properties.Faccount.eq(user.getAcount()));
+        queryBuilder.where(DeviceItemDao.Properties.Faccount.eq(user.getEmail()));
         queryBuilder.where(DeviceItemDao.Properties.ServerState.eq(0));
         return queryBuilder.list().size();
     }
@@ -134,7 +134,7 @@ public class ZbarActivity extends BaseFullScreenActivity implements QRCodeView.D
         item.setDeviceid(Integer.parseInt(info[1]));
         item.setScantime(time);
         item.setUserid(user.getUserid());
-        item.setFaccount(user.getAcount());
+        item.setFaccount(user.getEmail());
         return item;
     }
 
