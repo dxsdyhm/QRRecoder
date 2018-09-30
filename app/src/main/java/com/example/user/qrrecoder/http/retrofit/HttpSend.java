@@ -29,7 +29,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HttpSend {
 //    private final static String BASEURL="http://39.108.193.125:81/psp/ja/v1/";
-    private final static String BASEURL="http://vasapi.cloudlinks.cn:8085/psp/ja/v1/";
+//    private final static String BASEURL="http://vasapi.cloudlinks.cn:8085/psp/ja/v1/";
+    private final static String BASEURL="https://psp.cloudlinks.cn/psp/ja/v1/";
     private static class HtpSendHolder{
         public static final HttpSend INSTENCE=new HttpSend();
     }

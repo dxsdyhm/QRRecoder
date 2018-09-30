@@ -10,7 +10,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.jwkj.qrrecoder"
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 14
         versionName versionname

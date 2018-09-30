@@ -3,6 +3,7 @@ package com.example.user.qrrecoder.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatImageView;
@@ -56,7 +57,9 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         mContext = this;
-        getWindow().setReturnTransition(new Fade().setDuration(300));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setReturnTransition(new Fade().setDuration(300));
+        }
     }
 
     @Override
